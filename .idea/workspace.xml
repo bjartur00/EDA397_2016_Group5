@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="257f5407-0616-4ecd-bc43-42a94cd09cda" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Omar\EDA397_2016_Group5\test.txt" afterPath="" />
-    </list>
+    <list default="true" id="257f5407-0616-4ecd-bc43-42a94cd09cda" name="Default" comment="" />
     <ignored path="EDA397_2016_Group5.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -1587,10 +1585,9 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
+    <option name="x" value="-8" />
     <option name="width" value="1612" />
-    <option name="height" value="868" />
+    <option name="height" value="858" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -1752,7 +1749,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1612" height="868" extended-state="0" />
+    <frame x="-8" y="0" width="1612" height="858" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
