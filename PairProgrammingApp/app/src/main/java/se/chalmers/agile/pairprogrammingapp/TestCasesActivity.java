@@ -73,6 +73,22 @@ public class TestCasesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 TestCaseObject clickedTestCase = testCases.get(position);
                 Toast.makeText(TestCasesActivity.this, clickedTestCase.getTitle(), Toast.LENGTH_LONG).show();
+                switch (clickedTestCase.getStatus()) {
+                    case 1:
+                        viewClicked.setBackgroundColor(Color.YELLOW);
+                        clickedTestCase.setStatus(clickedTestCase.getStatus()+1);
+                        break;
+                    case 2:
+                        viewClicked.setBackgroundColor(Color.RED);
+                        clickedTestCase.setStatus(clickedTestCase.getStatus() + 1);
+                        break;
+                    case 3:
+                        viewClicked.setBackgroundColor(Color.GREEN);
+                        clickedTestCase.setStatus(clickedTestCase.getStatus()-2);
+                        break;
+                    default: viewClicked.setBackgroundColor(Color.WHITE);
+                        break;
+                }
             }
         });
     }
