@@ -19,13 +19,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ViewNotesActivity"
+            android:name=".activities.ViewNotesActivity"
             android:label="@string/title_activity_view_notes"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.chalmers.agile.pairprogrammingapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.EditNoteActivity"
+            android:label="@string/title_activity_edit_note"
+            android:parentActivityName=".activities.ViewNotesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.chalmers.agile.pairprogrammingapp.activities.ViewNotesActivity" />
         </activity>
     </application>
 

@@ -45,6 +45,13 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         return mNotes.size();
     }
 
+    public void deleteItem(int index) {
+        if (index < mNotes.size()) {
+            mNotes.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
     public static class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -62,7 +69,8 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);
             tvContent = (TextView) itemView.findViewById(R.id.tvContent);
 
-            itemView.setOnClickListener(this);
+            itemView.findViewById(R.id.item).setOnClickListener(this);
+            itemView.findViewById(R.id.btnDelete).setOnClickListener(this);
         }
 
         public void setData(int position, Note note) {
@@ -75,12 +83,17 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         @Override
         public void onClick(View v) {
             if (listener != null) {
-                listener.onNoteItemClicked(position);
+                if (v.getId() == R.id.item) {
+                    listener.onNoteItemClicked(getAdapterPosition());
+                } else if (v.getId() == R.id.btnDelete) {
+                    listener.onDeleteNoteClicked(getAdapterPosition());
+                }
             }
         }
     }
 
     public interface OnNoteItemClickedListener {
         void onNoteItemClicked(int position);
+        void onDeleteNoteClicked(int position);
     }
 }

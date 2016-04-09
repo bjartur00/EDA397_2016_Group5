@@ -1,18 +1,21 @@
-package se.chalmers.agile.pairprogrammingapp;
+package se.chalmers.agile.pairprogrammingapp.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.Note;
 import se.chalmers.agile.pairprogrammingapp.modelview.NotesListAdapter;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
@@ -21,9 +24,10 @@ import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 public class ViewNotesActivity extends AppCompatActivity implements NotesListAdapter.OnNoteItemClickedListener {
     private final static String KEY_APP_ID = "KEY_APP_ID";
 
-    private String appId = null;
+    private String mAppId = null;
+    private ArrayList<Note> mNotes;
 
-    private RecyclerView rvList;
+    private NotesListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,57 +49,58 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
         if (savedInstanceState == null) {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                appId = bundle.getString(ExtraKeys.APPLICATION_ID);
+                mAppId = bundle.getString(ExtraKeys.APPLICATION_ID);
             } else {
-                appId = null;
+                mAppId = null;
             }
         } else {
-            appId = savedInstanceState.getString(KEY_APP_ID);
+            mAppId = savedInstanceState.getString(KEY_APP_ID);
         }
 
-        if (appId != null) {
+        if (mAppId != null) {
             init();
         }
     }
 
     private void init() {
         // Prepare test data
-        ArrayList<Note> notes = new ArrayList<>();
+        mNotes = new ArrayList<>();
 
-        if (appId.equals(StaticTestIds.APP_ID_1)) {
-            notes.add(new Note("Note for app 1"));
-            notes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
+        if (mAppId.equals(StaticTestIds.APP_ID_1)) {
+            mNotes.add(new Note("Note for app 1"));
+            mNotes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
                     "\n" +
                     "Integer fringilla vestibulum enim nec efficitur. Vivamus viverra id risus in pretium. Suspendisse a scelerisque purus, id tempor mauris. In hac habitasse platea dictumst. Duis cursus purus eget placerat pharetra. Sed laoreet pretium nunc, a posuere nisi auctor egestas. Mauris varius luctus placerat. Ut efficitur sit amet eros sed fermentum. Suspendisse pharetra rhoncus diam, a gravida leo rutrum ac. Quisque quis posuere orci. Cras ut lacus iaculis, dapibus mi sit amet, cursus dui.\n" +
                     "\n" +
                     "Vivamus commodo eu ante eget commodo. Vivamus tellus neque, pellentesque eget mi nec, malesuada molestie orci. Praesent quis tincidunt justo, eget vulputate dolor. Integer dolor mi, dictum at scelerisque tempus, aliquam et nunc. Maecenas nec convallis justo. Aenean vel maximus elit. Suspendisse fringilla bibendum ante.\n" +
                     "\n"));
-            notes.add(new Note("test 3"));
-        } else if (appId.equals(StaticTestIds.APP_ID_2)) {
-            notes.add(new Note("Note for app 2"));
-            notes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
+            mNotes.add(new Note("test 3"));
+        } else if (mAppId.equals(StaticTestIds.APP_ID_2)) {
+            mNotes.add(new Note("Note for app 2"));
+            mNotes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
                     "\n" +
                     "Integer fringilla vestibulum enim nec efficitur. Vivamus viverra id risus in pretium. Suspendisse a scelerisque purus, id tempor mauris. In hac habitasse platea dictumst. Duis cursus purus eget placerat pharetra. Sed laoreet pretium nunc, a posuere nisi auctor egestas. Mauris varius luctus placerat. Ut efficitur sit amet eros sed fermentum. Suspendisse pharetra rhoncus diam, a gravida leo rutrum ac. Quisque quis posuere orci. Cras ut lacus iaculis, dapibus mi sit amet, cursus dui.\n" +
                     "\n" +
                     "Vivamus commodo eu ante eget commodo. Vivamus tellus neque, pellentesque eget mi nec, malesuada molestie orci. Praesent quis tincidunt justo, eget vulputate dolor. Integer dolor mi, dictum at scelerisque tempus, aliquam et nunc. Maecenas nec convallis justo. Aenean vel maximus elit. Suspendisse fringilla bibendum ante.\n" +
                     "\n"));
         } else {
-            notes.add(new Note("Note for app 3"));
-            notes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
+            mNotes.add(new Note("Note for app 3"));
+            mNotes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
                     "\n" +
                     "Integer fringilla vestibulum enim nec efficitur. Vivamus viverra id risus in pretium. Suspendisse a scelerisque purus, id tempor mauris. In hac habitasse platea dictumst. Duis cursus purus eget placerat pharetra. Sed laoreet pretium nunc, a posuere nisi auctor egestas. Mauris varius luctus placerat. Ut efficitur sit amet eros sed fermentum. Suspendisse pharetra rhoncus diam, a gravida leo rutrum ac. Quisque quis posuere orci. Cras ut lacus iaculis, dapibus mi sit amet, cursus dui.\n" +
                     "\n" +
                     "Vivamus commodo eu ante eget commodo. Vivamus tellus neque, pellentesque eget mi nec, malesuada molestie orci. Praesent quis tincidunt justo, eget vulputate dolor. Integer dolor mi, dictum at scelerisque tempus, aliquam et nunc. Maecenas nec convallis justo. Aenean vel maximus elit. Suspendisse fringilla bibendum ante.\n" +
                     "\n"));
-            notes.add(new Note("test note A"));
-            notes.add(new Note("test note B"));
-            notes.add(new Note("test note C"));
+            mNotes.add(new Note("test note A"));
+            mNotes.add(new Note("test note B"));
+            mNotes.add(new Note("test note C"));
         }
 
         // Show data
-        rvList = (RecyclerView) findViewById(R.id.list);
+        RecyclerView rvList = (RecyclerView) findViewById(R.id.list);
         rvList.setLayoutManager(new LinearLayoutManager(this));
-        rvList.setAdapter(new NotesListAdapter(notes, this));
+        mAdapter = new NotesListAdapter(mNotes, this);
+        rvList.setAdapter(mAdapter);
     }
 
     @Override
@@ -103,11 +108,42 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
         super.onSaveInstanceState(outState, outPersistentState);
 
         // Save the app ID
-        outState.putString(KEY_APP_ID, appId);
+        outState.putString(KEY_APP_ID, mAppId);
     }
 
     @Override
     public void onNoteItemClicked(int position) {
         Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteNoteClicked(final int position) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Delete note");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete the note?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Delete the note
+                        mAdapter.deleteItem(position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Close the dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">PairProgrammingApp</string>
     <string name="action_settings">Settings</string>
+    <string name="action_save">Save</string>
     <string name="title_activity_view_notes">ViewNotesActivity</string>
+    <string name="title_activity_edit_note">EditNoteActivity</string>
 </resources>
