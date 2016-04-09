@@ -24,5 +24,7 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
+        // Set date to current whenever the content is changed
+        this.date = new Date();
     }
 }

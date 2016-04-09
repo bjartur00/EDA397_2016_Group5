@@ -1,6 +1,7 @@
 package se.chalmers.agile.pairprogrammingapp.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,8 @@ import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 
 public class ViewNotesActivity extends AppCompatActivity implements NotesListAdapter.OnNoteItemClickedListener {
     private final static String KEY_APP_ID = "KEY_APP_ID";
+    private final static int EDIT_REQUEST_CODE = 5000;
+    private final static int NEW_NOTE_POSITION = -2;
 
     private String mAppId = null;
     private ArrayList<Note> mNotes;
@@ -41,15 +44,18 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(ViewNotesActivity.this, EditNoteActivity.class);
+                intent.putExtra(ExtraKeys.NOTE_POSITION, NEW_NOTE_POSITION);
 
+                startActivityForResult(intent, EDIT_REQUEST_CODE);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                mAppId = bundle.getString(ExtraKeys.APPLICATION_ID);
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                mAppId = extras.getString(ExtraKeys.APPLICATION_ID);
             } else {
                 mAppId = null;
             }
@@ -113,7 +119,11 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
 
     @Override
     public void onNoteItemClicked(int position) {
-        Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, EditNoteActivity.class);
+        intent.putExtra(ExtraKeys.NOTE_POSITION, position);
+        intent.putExtra(ExtraKeys.NOTE_CONTENT, mNotes.get(position).getContent());
+
+        startActivityForResult(intent, EDIT_REQUEST_CODE);
     }
 
     @Override
@@ -145,5 +155,25 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
 
         // show it
         alertDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK) {
+            if (requestCode == EDIT_REQUEST_CODE) {
+                int position = data.getIntExtra(ExtraKeys.NOTE_POSITION, NEW_NOTE_POSITION);
+                String content = data.getStringExtra(ExtraKeys.NOTE_CONTENT);
+
+                if (position == NEW_NOTE_POSITION) {
+                    mNotes.add(new Note(content));
+                    mAdapter.notifyItemAdded();
+                } else {
+                    mNotes.get(position).setContent(content);
+                    mAdapter.notifyItemModified(position);
+                }
+            }
+        }
     }
 }

@@ -5,4 +5,6 @@ package se.chalmers.agile.pairprogrammingapp.utils;
  */
 public class ExtraKeys {
     public static final String APPLICATION_ID = "APPLICATION_ID";
+    public static final String NOTE_POSITION = "NOTE_POSITION";
+    public static final String NOTE_CONTENT = "NOTE_CONTENT";
 }

@@ -52,6 +52,14 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         }
     }
 
+    public void notifyItemAdded() {
+        notifyItemInserted(mNotes.size() - 1);
+    }
+
+    public void notifyItemModified(int position) {
+        notifyItemChanged(position);
+    }
+
     public static class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -94,6 +102,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
 
     public interface OnNoteItemClickedListener {
         void onNoteItemClicked(int position);
+
         void onDeleteNoteClicked(int position);
     }
 }
