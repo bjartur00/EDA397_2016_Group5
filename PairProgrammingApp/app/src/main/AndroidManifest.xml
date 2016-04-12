@@ -18,6 +18,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DisplayProjectActivity"
+            android:label="@string/title_activity_display_project"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.chalmers.agile.pairprogrammingapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DisplayUnitsActivity"
+            android:label="@string/title_activity_display_units"
+            android:parentActivityName=".DisplayProjectActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.chalmers.agile.pairprogrammingapp.DisplayProjectActivity" />
+        </activity>
     </application>
 
 </manifest>

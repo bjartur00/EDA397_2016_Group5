@@ -9,14 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="se.chalmers.agile.pairprogrammingapp.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="se.chalmers.agile.pairprogrammingapp.DisplayUnitsActivity"
+    tools:showIn="@layout/activity_display_units"
+    android:id="@+id/unit_content">
 
-    <TextView
-        android:id="@+id/show_project"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:clickable="true"
-        android:onClick="showProjects"/>
 </RelativeLayout>
