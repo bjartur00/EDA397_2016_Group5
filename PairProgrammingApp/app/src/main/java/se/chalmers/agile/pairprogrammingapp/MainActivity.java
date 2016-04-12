@@ -12,6 +12,7 @@ import se.chalmers.agile.pairprogrammingapp.activities.ViewNotesActivity;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     User secondUser;
     User thirdUser;
 
+    public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,5 +95,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showProjects(View view) {
+        Intent intent = new Intent(this, DisplayProjectActivity.class);
+        //finds the textview through the user interface
+        TextView textView = (TextView) findViewById(R.id.show_project);
+        String message = textView.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }

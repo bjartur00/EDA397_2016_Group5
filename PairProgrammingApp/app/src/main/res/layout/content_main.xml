@@ -70,4 +70,14 @@
         android:layout_alignParentStart="true"
         android:onClick="openLoginScreen" />
 
+    <TextView
+        android:id="@+id/show_project"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:clickable="true"
+        android:onClick="showProjects"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
