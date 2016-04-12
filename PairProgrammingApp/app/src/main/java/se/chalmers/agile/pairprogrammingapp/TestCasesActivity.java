@@ -1,5 +1,6 @@
 package se.chalmers.agile.pairprogrammingapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,8 +49,8 @@ public class TestCasesActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(TestCasesActivity.this, NewTestCaseActivity.class);
+                startActivity(intent);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,11 +73,10 @@ public class TestCasesActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 TestCaseObject clickedTestCase = testCases.get(position);
-                Toast.makeText(TestCasesActivity.this, clickedTestCase.getTitle(), Toast.LENGTH_LONG).show();
                 switch (clickedTestCase.getStatus()) {
                     case 1:
                         viewClicked.setBackgroundColor(Color.YELLOW);
-                        clickedTestCase.setStatus(clickedTestCase.getStatus()+1);
+                        clickedTestCase.setStatus(clickedTestCase.getStatus() + 1);
                         break;
                     case 2:
                         viewClicked.setBackgroundColor(Color.RED);
@@ -84,9 +84,10 @@ public class TestCasesActivity extends AppCompatActivity {
                         break;
                     case 3:
                         viewClicked.setBackgroundColor(Color.GREEN);
-                        clickedTestCase.setStatus(clickedTestCase.getStatus()-2);
+                        clickedTestCase.setStatus(clickedTestCase.getStatus() - 2);
                         break;
-                    default: viewClicked.setBackgroundColor(Color.WHITE);
+                    default:
+                        viewClicked.setBackgroundColor(Color.WHITE);
                         break;
                 }
             }
