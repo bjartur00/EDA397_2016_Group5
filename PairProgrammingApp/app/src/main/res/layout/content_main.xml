@@ -12,30 +12,62 @@
     tools:context="se.chalmers.agile.pairprogrammingapp.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test2"
-        android:id="@+id/textView" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Open test cases"
         android:id="@+id/buttonOpenTestCases"
-        android:layout_below="@+id/textView"
+        android:onClick="openTestCases"
+        android:layout_alignBaseline="@+id/button_notes"
+        android:layout_alignBottom="@+id/button_notes"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/etEmail"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="60dp"
-        android:onClick="openTestCases" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:hint="Email" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/etPassword"
+        android:layout_below="@+id/etEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/etEmail"
+        android:layout_alignEnd="@+id/etEmail"
+        android:hint="Password" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Notes"
         android:id="@+id/button_notes"
-        android:layout_below="@+id/buttonOpenTestCases"
+        android:onClick="openNotes"
+        android:layout_below="@+id/bLogin"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="34dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/bLogin"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignRight="@+id/etPassword"
+        android:layout_alignEnd="@+id/etPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="openNotes" />
+        android:onClick="openLoginScreen" />
+
 </RelativeLayout>

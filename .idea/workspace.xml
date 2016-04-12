@@ -78,6 +78,7 @@
       <pane id="AndroidView">
         <subPane />
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
