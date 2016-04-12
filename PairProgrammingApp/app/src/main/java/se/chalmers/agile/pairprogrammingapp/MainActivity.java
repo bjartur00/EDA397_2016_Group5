@@ -1,5 +1,6 @@
 package se.chalmers.agile.pairprogrammingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,22 +9,57 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+    User firstUser;
+    User secondUser;
+    User thirdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        firstUser = new User("John Kennet","john@gmail.com","1234");
+        secondUser = new User("Sarah Smith","sarah@gmail.com","abcd");
+        thirdUser = new User("Tim Burton","tim@gmail.com","1234abcd");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final EditText etEmail = (EditText) findViewById(R.id.etEmail);
+        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
+        final Button bLogin = (Button) findViewById(R.id.bLogin);
+
+
+        bLogin.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view){
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+                if (email.matches(firstUser.getEmail()) && password.matches(firstUser.getPassword())) {
+                    Intent loginIntent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", firstUser.getName());
+                    bundle.putString("email", firstUser.getEmail());
+                    loginIntent.putExtras(bundle);
+                    MainActivity.this.startActivity(loginIntent);
+                } else if (email.matches(secondUser.getEmail()) && password.matches(secondUser.getPassword())) {
+                    Intent loginIntent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", secondUser.getName());
+                    bundle.putString("email", secondUser.getEmail());
+                    loginIntent.putExtras(bundle);
+                    MainActivity.this.startActivity(loginIntent);
+                } else if (email.matches(thirdUser.getEmail()) && password.matches(thirdUser.getPassword())) {
+                    Intent loginIntent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", thirdUser.getName());
+                    bundle.putString("email", thirdUser.getEmail());
+                    loginIntent.putExtras(bundle);
+                    MainActivity.this.startActivity(loginIntent);
+                }else{
+                    Snackbar.make(view, "Wrong email and/or password", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
     }
