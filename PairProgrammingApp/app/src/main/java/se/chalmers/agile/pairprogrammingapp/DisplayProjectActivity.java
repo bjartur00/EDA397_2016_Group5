@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
+
 public class DisplayProjectActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
@@ -31,6 +35,8 @@ public class DisplayProjectActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
+
+        ((TextView)findViewById(R.id.project_heading)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 //        TextView textView = new TextView(this);
 //        textView.setTextSize(20);

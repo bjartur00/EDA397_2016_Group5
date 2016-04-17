@@ -13,71 +13,64 @@
     tools:showIn="@layout/activity_main">
 
     <Button
+        android:id="@+id/buttonOpenTestCases"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open test cases"
-        android:id="@+id/buttonOpenTestCases"
-        android:onClick="openTestCases"
         android:layout_alignBaseline="@+id/button_notes"
         android:layout_alignBottom="@+id/button_notes"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/etEmail"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Email" />
+        android:onClick="openTestCases"
+        android:text="Open test cases" />
 
     <EditText
+        android:id="@+id/etEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:text="john@gmail.com" />
+
+    <EditText
         android:id="@+id/etPassword"
-        android:layout_below="@+id/etEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/etEmail"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/etEmail"
-        android:layout_alignEnd="@+id/etEmail"
-        android:hint="Password" />
+        android:layout_below="@+id/etEmail"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:text="1234" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notes"
         android:id="@+id/button_notes"
-        android:onClick="openNotes"
-        android:layout_below="@+id/bLogin"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="34dp" />
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/bLogin"
+        android:layout_marginTop="34dp"
+        android:onClick="openNotes"
+        android:text="Notes" />
+
+    <Button
         android:id="@+id/bLogin"
-        android:layout_below="@+id/etPassword"
-        android:layout_alignRight="@+id/etPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/etPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="openLoginScreen" />
-
-    <TextView
-        android:id="@+id/show_project"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:clickable="true"
-        android:onClick="showProjects"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignRight="@+id/etPassword"
+        android:layout_below="@+id/etPassword"
+        android:onClick="openLoginScreen"
+        android:text="Login" />
 </RelativeLayout>
