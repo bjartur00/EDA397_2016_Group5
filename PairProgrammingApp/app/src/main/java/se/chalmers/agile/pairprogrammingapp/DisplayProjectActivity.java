@@ -7,6 +7,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +20,7 @@ import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 public class DisplayProjectActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
+    public String message = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,65 +40,43 @@ public class DisplayProjectActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        ((TextView)findViewById(R.id.project_heading)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-//        TextView textView = new TextView(this);
-//        textView.setTextSize(20);
-//        if (message == "Project 1") {
+        ((TextView)findViewById(R.id.project_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
 
-//        }
-//        textView.setText(message);
-
-//        RelativeLayout layout = (RelativeLayout) findViewById(R.id.project_content);
-        //accroding to the message from the MainActivity, the corresponding projects need to be displayed for him/her. Projects maybe added or removed if hardcoded.
-        //If a database is connected, they need to be displayed according to the database record!
-          findViewById(R.id.project_content);
-//        layout.addView(textView);
+        populateListView();
+        registerClickCallBack();
     }
 
-    public void showProject1(View view) {
-        Intent intent = new Intent(this, DisplayUnitsActivity.class);
-        //finds the textview through the user interface
-        TextView textView = (TextView) findViewById(R.id.project_name1);
-        String message = textView.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+    private void populateListView() {
+        //create the list of items
+        String[] projectItems = {"Project 1", "Project 2", "Project 3", "Project 4"};
+
+        //build the adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.project_items,   //layout used to create the list
+                projectItems);
+
+        //configure the list view
+        ListView list = (ListView) findViewById(R.id.project_list);
+        list.setAdapter(adapter);
+
     }
 
-    public void showProject2(View view) {
-        Intent intent = new Intent(this, DisplayUnitsActivity.class);
-        //finds the textview through the user interface
-        TextView textView = (TextView) findViewById(R.id.project_name2);
-        String message = textView.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
+    private void registerClickCallBack() {
+        ListView list = (ListView) findViewById(R.id.project_list);
 
-    public void showProject3(View view) {
-        Intent intent = new Intent(this, DisplayUnitsActivity.class);
-        //finds the textview through the user interface
-        TextView textView = (TextView) findViewById(R.id.project_name3);
-        String message = textView.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewclicked, int position, long id) {
+                //position gives the number of the item clicked.
+                Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
+                TextView textView = (TextView) viewclicked;
+                message = textView.getText().toString();
 
-    public void showProject4(View view) {
-        Intent intent = new Intent(this, DisplayUnitsActivity.class);
-        //finds the textview through the user interface
-        TextView textView = (TextView) findViewById(R.id.project_name4);
-        String message = textView.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
+                intent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(intent);
+            }
+        });
 
-    public void showProject5(View view) {
-        Intent intent = new Intent(this, DisplayUnitsActivity.class);
-        //finds the textview through the user interface
-        TextView textView = (TextView) findViewById(R.id.project_name5);
-        String message = textView.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
     }
 
 }

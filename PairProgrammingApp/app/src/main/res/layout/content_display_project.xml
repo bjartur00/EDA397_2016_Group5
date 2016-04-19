@@ -14,65 +14,19 @@
     tools:showIn="@layout/activity_display_project">
 
     <TextView
-        android:id="@+id/project_heading"
+        android:id="@+id/project_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Your Projects:"
+        android:textStyle="bold"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        />
 
-    <TextView
-        android:id="@+id/project_name1"
+    <ListView
+        android:id="@+id/project_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/project_heading"
-        android:clickable="true"
-        android:onClick="showProject1"
-        android:paddingLeft="10dp"
-        android:text="@string/show_project1"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/project_name2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/project_name1"
-        android:clickable="true"
-        android:onClick="showProject2"
-        android:paddingLeft="10dp"
-        android:text="@string/show_project2"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/project_name3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/project_name2"
-        android:clickable="true"
-        android:onClick="showProject3"
-        android:paddingLeft="10dp"
-        android:text="@string/show_project3"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/project_name4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/project_name3"
-        android:clickable="true"
-        android:onClick="showProject4"
-        android:paddingLeft="10dp"
-        android:text="@string/show_project4"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/project_name5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/project_name4"
-        android:clickable="true"
-        android:onClick="showProject5"
-        android:paddingLeft="10dp"
-        android:text="@string/show_project5"
-        android:textSize="20sp" />
+        android:layout_below="@+id/project_title">
+    </ListView>
 
 </RelativeLayout>
