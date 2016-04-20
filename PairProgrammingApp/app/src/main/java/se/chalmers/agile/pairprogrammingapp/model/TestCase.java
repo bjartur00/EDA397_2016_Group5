@@ -1,8 +1,8 @@
 package se.chalmers.agile.pairprogrammingapp.model;
 
-/**
- * Created by Omar on 5.4.2016.
- */
+/*
+ * Copyright (C), Owner, Omar Thor Omarsson and co.
+*/
 public class TestCase {
     private String title;
     private String description;
