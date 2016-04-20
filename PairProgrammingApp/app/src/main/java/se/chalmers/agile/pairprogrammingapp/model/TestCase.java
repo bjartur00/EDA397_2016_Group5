@@ -1,9 +1,9 @@
-package se.chalmers.agile.pairprogrammingapp;
+package se.chalmers.agile.pairprogrammingapp.model;
 
 /**
  * Created by Omar on 5.4.2016.
  */
-public class TestCaseObject {
+public class TestCase {
     private String title;
     private String description;
     // 1 = Test passed
@@ -12,7 +12,7 @@ public class TestCaseObject {
     private int status;
     private int id;
 
-    public TestCaseObject(String title, String description, int status, int id) {
+    public TestCase(String title, String description, int status, int id) {
         this.title = title;
         this.description = description;
         this.status = status;

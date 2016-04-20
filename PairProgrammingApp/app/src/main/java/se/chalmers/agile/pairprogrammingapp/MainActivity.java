@@ -11,12 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.design.widget.Snackbar;
 
+import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
 import se.chalmers.agile.pairprogrammingapp.activities.ViewNotesActivity;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 
 import android.widget.EditText;
-import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
