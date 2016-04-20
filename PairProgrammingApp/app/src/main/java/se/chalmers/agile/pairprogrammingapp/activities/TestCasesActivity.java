@@ -1,5 +1,9 @@
 package se.chalmers.agile.pairprogrammingapp.activities;
 
+/*
+ * Copyright (C), Owner, Omar Thor Omarsson and co.
+*/
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,21 +23,20 @@ import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.modelview.TestCasesListAdapter;
 
+// This class is used for achieving functionality in the Test Case view.
 public class TestCasesActivity extends AppCompatActivity implements TestCasesListAdapter.OnTestCaseItemClickedListener {
-    private final static String KEY_APP_ID = "KEY_APP_ID";
 
-    private String mAppId = null;
+    private final static String KEY_APP_ID = "KEY_APP_ID";
     public static ArrayList<TestCase> mTestCases = new ArrayList<>();
     private TestCasesListAdapter mAdapter;
 
+    //Used to create the main view for the list of test cases
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_cases);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,13 +46,13 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         if (mTestCases.size() <= 0) {
             populateTestCases();
         }
-        populatRecyclerView();
+        populateRecyclerView();
     }
 
+    // Creates dummy test cases (Hard coded). This will be deleted when Trello has been implemented.
     private void populateTestCases() {
         mTestCases.add(new TestCase("Display test cases", "For each module the test cases should be displayed in a list.", 1, 0));
         mTestCases.add(new TestCase("Display test cases status", "The status of each test case shall be displayed with a appropriate color.", 2, 0));
@@ -59,55 +62,21 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
         mTestCases.add(new TestCase("Test case 6", "Some basic description", 1, 0));
     }
 
+    // At this point not used, will be used later. The main purpose is to get the item that was clicked
     @Override
     public void onTestCaseItemClicked(int position) {
     }
 
+    // At this point not used, will be used later. The main purpose is the get the item that the user wants to delete.
     @Override
     public void onDeleteTestCaseClicked(final int position) {
     }
 
-    private void populatRecyclerView(){
+    // Initializes the recycler view for the test cases
+    private void populateRecyclerView(){
         RecyclerView rvList = (RecyclerView) findViewById(R.id.listViewTestCases);
         rvList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TestCasesListAdapter(mTestCases, this);
         rvList.setAdapter(mAdapter);
-    }
-
-    private class MyListAdapter extends ArrayAdapter<TestCase>{
-        public MyListAdapter() {
-            super(TestCasesActivity.this, R.layout.testcase, mTestCases);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Make sure that we have a view to work with (may have been given null)
-            View itemView = convertView;
-            if(itemView == null){
-                itemView = getLayoutInflater().inflate(R.layout.testcase, parent, false);
-            }
-
-            TestCase currentTestCase = mTestCases.get(position);
-
-            // Title
-            TextView titleText = (TextView) itemView.findViewById(R.id.item_TestCaseTitle);
-            titleText.setText(currentTestCase.getTitle());
-
-            //Description
-            TextView descriptionText = (TextView) itemView.findViewById(R.id.item_TestCaseDescription);
-            descriptionText.setText(currentTestCase.getDescription());
-
-            switch (currentTestCase.getStatus()) {
-                case 1:  itemView.setBackgroundColor(Color.GREEN);
-                    break;
-                case 2:  itemView.setBackgroundColor(Color.YELLOW);
-                    break;
-                case 3:  itemView.setBackgroundColor(Color.RED);
-                    break;
-                default: itemView.setBackgroundColor(Color.WHITE);
-                    break;
-            }
-            return itemView;
-        }
     }
 }

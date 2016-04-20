@@ -14,14 +14,17 @@ import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 
 
-/**
- * Created by Omar on 09/04/16.
- */
+/*
+ * Copyright (C), Owner, Omar Thor Omarsson and co.
+*/
+// Here is the adapter built for the Test cases
 public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdapter.TestCaseViewHolder> {
 
+    // The global variables
     private ArrayList<TestCase> testCases;
     private OnTestCaseItemClickedListener mListener;
 
+    //Here the adapter is given the correct test cases and has a listener which is responsible for identifying the item that was selected / clicked
     public TestCasesListAdapter(ArrayList<TestCase> pTestCases, OnTestCaseItemClickedListener listener) {
         this.testCases = pTestCases;
         this.mListener = listener;
@@ -124,6 +127,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
         }
     }
 
+    // Abstract classes
     public interface OnTestCaseItemClickedListener {
         void onTestCaseItemClicked(int position);
 
