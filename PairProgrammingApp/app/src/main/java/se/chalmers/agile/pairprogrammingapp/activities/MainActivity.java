@@ -1,4 +1,4 @@
-package se.chalmers.agile.pairprogrammingapp;
+package se.chalmers.agile.pairprogrammingapp.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,10 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.design.widget.Snackbar;
 
-import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
-import se.chalmers.agile.pairprogrammingapp.activities.ViewNotesActivity;
+import se.chalmers.agile.pairprogrammingapp.DisplayProjectActivity;
+import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.User;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 

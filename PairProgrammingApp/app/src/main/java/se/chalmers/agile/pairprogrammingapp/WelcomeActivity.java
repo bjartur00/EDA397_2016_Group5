@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import se.chalmers.agile.pairprogrammingapp.activities.MainActivity;
+
 public class WelcomeActivity extends AppCompatActivity {
     public TextView showMessage;
 
