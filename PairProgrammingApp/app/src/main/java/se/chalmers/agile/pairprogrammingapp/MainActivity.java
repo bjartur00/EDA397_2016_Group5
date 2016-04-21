@@ -1,5 +1,7 @@
 package se.chalmers.agile.pairprogrammingapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,9 +20,9 @@ import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
-    User firstUser;
-    User secondUser;
-    User thirdUser;
+    User firstUser = new User("John Kennet", "john@gmail.com", "1234");
+    User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");;
+    User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
 
@@ -28,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        firstUser = new User("John Kennet", "john@gmail.com", "1234");
-        secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");
-        thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
@@ -52,31 +51,52 @@ public class MainActivity extends AppCompatActivity {
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        if (email.matches(firstUser.getEmail()) && password.matches(firstUser.getPassword())) {
-            Intent loginIntent = new Intent(MainActivity.this, DisplayProjectActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(ExtraKeys.USERNAME, firstUser.getName());
-            bundle.putString("email", firstUser.getEmail());
-            loginIntent.putExtras(bundle);
-            MainActivity.this.startActivity(loginIntent);
-        } else if (email.matches(secondUser.getEmail()) && password.matches(secondUser.getPassword())) {
-            Intent loginIntent = new Intent(MainActivity.this, DisplayProjectActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(ExtraKeys.USERNAME, secondUser.getName());
-            bundle.putString("email", secondUser.getEmail());
-            loginIntent.putExtras(bundle);
-            MainActivity.this.startActivity(loginIntent);
-        } else if (email.matches(thirdUser.getEmail()) && password.matches(thirdUser.getPassword())) {
-            Intent loginIntent = new Intent(MainActivity.this, DisplayProjectActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(ExtraKeys.USERNAME, thirdUser.getName());
-            bundle.putString("email", thirdUser.getEmail());
-            loginIntent.putExtras(bundle);
-            MainActivity.this.startActivity(loginIntent);
+        AuthenticateUser(email, password);
+    }
+
+    public void AuthenticateUser(String email, String password) {
+        // Authenticates the user. If the email and password are correct, then
+        // the user is logged in. Otherwise an error message will be displayed.
+        if (checkEmailAndPassword(firstUser, email, password)) {
+            logInUser(firstUser);
+        } else if (checkEmailAndPassword(secondUser, email, password)){
+            logInUser(secondUser);
+        } else if (checkEmailAndPassword(thirdUser, email, password)) {
+            logInUser(thirdUser);
         } else {
-            Snackbar.make(view, "Wrong email and/or password", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            displayErrorMessage();
         }
+    }
+
+    public boolean checkEmailAndPassword(User user, String email, String password){
+        // Checks if the email and password match the user
+        return (email.matches(user.getEmail()) && password.matches(user.getPassword()));
+    }
+
+    public void logInUser(User user) {
+        // Logs the user in that has already been authenticated.
+        Intent loginIntent = new Intent(MainActivity.this, DisplayProjectActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(ExtraKeys.USERNAME, user.getName());
+        bundle.putString("email", user.getEmail());
+        loginIntent.putExtras(bundle);
+        MainActivity.this.startActivity(loginIntent);
+    }
+
+    public void displayErrorMessage(){
+        // Username or password false, display and an error
+        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("Wrong password or username");
+        dlgAlert.setTitle("Error Message");
+        dlgAlert.setPositiveButton("OK", null);
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
     }
 
     @Override
