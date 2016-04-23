@@ -5,15 +5,16 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
@@ -21,6 +22,16 @@ public class DisplayProjectActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
     public String message = null;
+
+    private static String LOG_TAG = "MyRecyclerViewAdapter";
+
+    private RecyclerView mRecyclerView;
+
+    private RecyclerView.Adapter mAdapter;
+
+    //contains the layout of the views inside of the Recycler view.
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +39,7 @@ public class DisplayProjectActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //To-do: This part may be modified to add new projects...
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -42,41 +54,49 @@ public class DisplayProjectActivity extends AppCompatActivity {
 
         ((TextView)findViewById(R.id.project_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
 
-        populateListView();
-        registerClickCallBack();
-    }
+        //assist the variable to find its targeting layout in the layout folder.
+        mRecyclerView = (RecyclerView) findViewById(R.id.project_list);
 
-    private void populateListView() {
-        //create the list of items
-        String[] projectItems = {"Project 1", "Project 2", "Project 3", "Project 4"};
+        //use this seeting to improve performance if you know that
+        //changes in content do not change the layout size of the Recycler view
+        mRecyclerView.setHasFixedSize(true);
+        //use a lienar layout manager, the views inside the recycler view should be vertically linear
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //build the adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.project_items,   //layout used to create the list
-                projectItems);
-
-        //configure the list view
-        ListView list = (ListView) findViewById(R.id.project_list);
-        list.setAdapter(adapter);
+        //specify an adapter
+        mAdapter = new DisplayProjectAdapter(getDataSet());
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
-    private void registerClickCallBack() {
-        ListView list = (ListView) findViewById(R.id.project_list);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((DisplayProjectAdapter) mAdapter).setOnItemClickListener(new DisplayProjectAdapter.MyClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View viewclicked, int position, long id) {
-                //position gives the number of the item clicked.
+            public void onItemClick(int position, View v) {
+                Log.i(LOG_TAG, " Clicked on Item " + position);
                 Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
-                TextView textView = (TextView) viewclicked;
-                message = textView.getText().toString();
+                TextView textview = (TextView)((ViewGroup) v).getChildAt(0);
+
+                message = textview.getText().toString();
 
                 intent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(intent);
+
             }
         });
-
     }
+
+    private ArrayList<Project> getDataSet() {
+        ArrayList results = new ArrayList<Project>();
+        for (int index = 0; index < 4; index++) {
+            Project data = new Project("Project " + index, "Progress " + index);
+            results.add(index, data);
+        }
+        return results;
+    }
+
 
 }

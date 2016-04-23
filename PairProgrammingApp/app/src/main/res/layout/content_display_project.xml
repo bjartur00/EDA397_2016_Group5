@@ -19,14 +19,15 @@
         android:layout_height="wrap_content"
         android:text="Your Projects:"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:textSize="25sp"
         />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/project_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/project_title">
-    </ListView>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/project_title"
+        android:scrollbars="vertical">>
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
