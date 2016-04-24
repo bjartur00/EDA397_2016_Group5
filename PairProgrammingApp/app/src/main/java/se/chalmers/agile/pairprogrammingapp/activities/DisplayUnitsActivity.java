@@ -1,4 +1,8 @@
-package se.chalmers.agile.pairprogrammingapp;
+package se.chalmers.agile.pairprogrammingapp.activities;
+
+/**
+ * Created by wanziguelva on 16-04-24.
+ */
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +15,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import java.util.ArrayList;
 
+import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.activities.DisplayProjectActivity;
+import se.chalmers.agile.pairprogrammingapp.model.Unit;
+import se.chalmers.agile.pairprogrammingapp.modelview.DisplayUnitAdapter;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
-public class DisplayProjectActivity extends AppCompatActivity {
+/**
+ * This activity displays the list of units selected by the user.
+ */
+public class DisplayUnitsActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
     public String message = null;
@@ -32,14 +43,14 @@ public class DisplayProjectActivity extends AppCompatActivity {
     //contains the layout of the views inside of the Recycler view.
     private RecyclerView.LayoutManager mLayoutManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_project);
+        setContentView(R.layout.activity_display_units);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //To-do: This part may be modified to add new projects...
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -52,10 +63,11 @@ public class DisplayProjectActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        ((TextView)findViewById(R.id.project_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
+//        ((TextView)findViewById(R.id.unit_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
 
-        //assist the variable to find its targeting layout in the layout folder.
-        mRecyclerView = (RecyclerView) findViewById(R.id.project_list);
+        message = intent.getStringExtra(DisplayProjectActivity.EXTRA_MESSAGE);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.unit_list);
 
         //use this seeting to improve performance if you know that
         //changes in content do not change the layout size of the Recycler view
@@ -65,20 +77,22 @@ public class DisplayProjectActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //specify an adapter
-        mAdapter = new DisplayProjectAdapter(getDataSet());
+        mAdapter = new DisplayUnitAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
+    /**
+     * This method contains an onClickListener that invokes the TestCaseActivity.
+     */
     @Override
     protected void onResume() {
         super.onResume();
-        ((DisplayProjectAdapter) mAdapter).setOnItemClickListener(new DisplayProjectAdapter.MyClickListener() {
+        ((DisplayUnitAdapter) mAdapter).setOnItemClickListener(new DisplayUnitAdapter.MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
                 Log.i(LOG_TAG, " Clicked on Item " + position);
-                Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
-                TextView textview = (TextView)((ViewGroup) v).getChildAt(0);
+                Intent intent = new Intent(DisplayUnitsActivity.this, TestCasesActivity.class);
+                TextView textview = (TextView) ((ViewGroup) v).getChildAt(0);
 
                 message = textview.getText().toString();
 
@@ -89,14 +103,36 @@ public class DisplayProjectActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<Project> getDataSet() {
-        ArrayList results = new ArrayList<Project>();
-        for (int index = 0; index < 4; index++) {
-            Project data = new Project("Project " + index, "Progress " + index);
-            results.add(index, data);
+    /**
+     * Creates the data to be filled in the activity.
+     * @return the unit data to be displayed.
+     */
+    private ArrayList<Unit> getDataSet() {
+        ArrayList results = new ArrayList<Unit>();
+
+        if (message.equals("Project 0")) {
+            for (int index = 0; index < 4; index++) {
+                Unit data = new Unit("Project 0, Unit " + index, "Progress " + index);
+                results.add(index, data);
+            }
+        } else if (message.equals("Project 1")) {
+            for (int index = 0; index < 4; index++) {
+                Unit data = new Unit("Project 1, Unit " + index, "Progress " + index);
+                results.add(index, data);
+            }
+        } else if (message.equals("Project 2")) {
+            for (int index = 0; index < 4; index++) {
+                Unit data = new Unit("Project 2, Unit " + index, "Progress " + index);
+                results.add(index, data);
+            }
+        } else if (message.equals("Project 3")) {
+            for (int index = 0; index < 4; index++) {
+                Unit data = new Unit("Project 3, Unit " + index, "Progress " + index);
+                results.add(index, data);
+            }
         }
+
         return results;
     }
-
 
 }

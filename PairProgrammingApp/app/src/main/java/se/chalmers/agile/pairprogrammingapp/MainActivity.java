@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.design.widget.Snackbar;
 
+import se.chalmers.agile.pairprogrammingapp.activities.DisplayProjectActivity;
 import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
 import se.chalmers.agile.pairprogrammingapp.activities.ViewNotesActivity;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;

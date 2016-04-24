@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import se.chalmers.agile.pairprogrammingapp.DisplayProjectActivity;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.User;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;

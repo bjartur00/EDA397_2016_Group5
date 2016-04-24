@@ -28,7 +28,7 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".DisplayProjectActivity"
+            android:name=".activities.DisplayProjectActivity"
             android:label="@string/title_activity_display_project"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -75,13 +75,13 @@
 
         <activity android:name=".WelcomeActivity"></activity>
         <activity
-            android:name=".DisplayUnitsActivity"
+            android:name=".activities.DisplayUnitsActivity"
             android:label="@string/title_activity_display_units"
-            android:parentActivityName=".DisplayProjectActivity"
+            android:parentActivityName=".activities.DisplayProjectActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="se.chalmers.agile.pairprogrammingapp.DisplayProjectActivity" />
+                android:value=".activities.DisplayProjectActivity" />
         </activity>
     </application>
 
