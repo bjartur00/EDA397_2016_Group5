@@ -4,6 +4,8 @@ package se.chalmers.agile.pairprogrammingapp.activities;
  * Copyright (C), Owner, Omar Thor Omarsson and co.
 */
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -67,9 +69,8 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
     public void onTestCaseItemClicked(int position) {
     }
 
-    // At this point not used, will be used later. The main purpose is the get the item that the user wants to delete.
     @Override
-    public void onDeleteTestCaseClicked(final int position) {
+    public void onChangeTestCaseClicked(int position) {
     }
 
     // Initializes the recycler view for the test cases
@@ -78,5 +79,36 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
         rvList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TestCasesListAdapter(mTestCases, this);
         rvList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onDeleteTestCaseClicked(final int position) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Delete note");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete the test case?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Delete the note
+                        mAdapter.deleteItem(position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Close the dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

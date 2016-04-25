@@ -1,5 +1,6 @@
 package se.chalmers.agile.pairprogrammingapp.modelview;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import se.chalmers.agile.pairprogrammingapp.NewTestCaseActivity;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
@@ -122,6 +124,10 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
                             v.setBackgroundColor(Color.WHITE);
                             break;
                     }
+                }  else if (v.getId() == R.id.item_testCaseChange) {
+                    listener.onChangeTestCaseClicked(getAdapterPosition());
+                }  else if (v.getId() == R.id.item_testCaseDelete) {
+                    listener.onDeleteTestCaseClicked(getAdapterPosition());
                 }
             }
         }
@@ -130,6 +136,8 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
     // Abstract classes
     public interface OnTestCaseItemClickedListener {
         void onTestCaseItemClicked(int position);
+
+        void onChangeTestCaseClicked(int position);
 
         void onDeleteTestCaseClicked(int position);
     }
