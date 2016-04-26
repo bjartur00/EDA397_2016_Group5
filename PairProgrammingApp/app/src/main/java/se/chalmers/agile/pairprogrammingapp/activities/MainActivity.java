@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import se.chalmers.agile.pairprogrammingapp.R;
-import se.chalmers.agile.pairprogrammingapp.User;
+import se.chalmers.agile.pairprogrammingapp.model.User;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 

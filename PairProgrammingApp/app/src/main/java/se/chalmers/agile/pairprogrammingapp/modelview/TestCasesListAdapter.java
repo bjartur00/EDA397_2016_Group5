@@ -1,6 +1,5 @@
 package se.chalmers.agile.pairprogrammingapp.modelview;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import se.chalmers.agile.pairprogrammingapp.NewTestCaseActivity;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;

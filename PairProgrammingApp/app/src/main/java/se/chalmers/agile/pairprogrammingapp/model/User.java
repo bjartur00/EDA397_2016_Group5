@@ -1,4 +1,4 @@
-package se.chalmers.agile.pairprogrammingapp;
+package se.chalmers.agile.pairprogrammingapp.model;
 
 /**
  * Created by Þórhildur on 9.4.2016.
