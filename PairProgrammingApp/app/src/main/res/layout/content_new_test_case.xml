@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="se.chalmers.agile.pairprogrammingapp.NewTestCaseActivity"
+    tools:context=".activities.NewTestCaseActivity"
     tools:showIn="@layout/activity_new_test_case">
 
     <RelativeLayout
@@ -35,15 +35,26 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/item_description"
+            android:id="@+id/item_TestCaseDescription"
             android:layout_below="@+id/item_TestCaseTitle"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:hint="Description"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:layout_above="@+id/item_saveTestCase" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/item_saveTestCase"
+            android:layout_marginBottom="42dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="openTestCases" />
 
 
     </RelativeLayout>

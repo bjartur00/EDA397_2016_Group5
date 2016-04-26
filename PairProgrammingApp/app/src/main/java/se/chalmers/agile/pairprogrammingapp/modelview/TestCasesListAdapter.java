@@ -122,6 +122,10 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
                             v.setBackgroundColor(Color.WHITE);
                             break;
                     }
+                }  else if (v.getId() == R.id.item_testCaseChange) {
+                    listener.onChangeTestCaseClicked(getAdapterPosition());
+                }  else if (v.getId() == R.id.item_testCaseDelete) {
+                    listener.onDeleteTestCaseClicked(getAdapterPosition());
                 }
             }
         }
@@ -130,6 +134,8 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
     // Abstract classes
     public interface OnTestCaseItemClickedListener {
         void onTestCaseItemClicked(int position);
+
+        void onChangeTestCaseClicked(int position);
 
         void onDeleteTestCaseClicked(int position);
     }

@@ -4,8 +4,9 @@ package se.chalmers.agile.pairprogrammingapp.activities;
  * Copyright (C), Owner, Omar Thor Omarsson and co.
 */
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+
 import java.util.ArrayList;
 
-import se.chalmers.agile.pairprogrammingapp.NewTestCaseActivity;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.modelview.TestCasesListAdapter;
@@ -67,9 +65,8 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
     public void onTestCaseItemClicked(int position) {
     }
 
-    // At this point not used, will be used later. The main purpose is the get the item that the user wants to delete.
     @Override
-    public void onDeleteTestCaseClicked(final int position) {
+    public void onChangeTestCaseClicked(int position) {
     }
 
     // Initializes the recycler view for the test cases
@@ -78,5 +75,36 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
         rvList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TestCasesListAdapter(mTestCases, this);
         rvList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onDeleteTestCaseClicked(final int position) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Delete note");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete the test case?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Delete the note
+                        mAdapter.deleteItem(position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Close the dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

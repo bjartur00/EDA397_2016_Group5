@@ -12,7 +12,8 @@
         android:id="@+id/item_TestCaseTitle"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/item_testCaseChange" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,5 +23,22 @@
         android:id="@+id/item_TestCaseDescription"
         android:layout_below="@+id/item_TestCaseTitle"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/item_testCaseChange" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_testCaseChange"
+        android:src="@drawable/abc_ic_menu_cut_mtrl_alpha"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/item_testCaseDelete" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_testCaseDelete"
+        android:src="@drawable/abc_ic_clear_mtrl_alpha"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
