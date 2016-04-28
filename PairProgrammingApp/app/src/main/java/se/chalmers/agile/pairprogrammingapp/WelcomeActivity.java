@@ -31,11 +31,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 WelcomeActivity.this.startActivity(logoutIntent);
             }
         });
-
-
-
-
-
-
+    }
+    public static int plus(int x, int y){
+        return x + y;
     }
 }
