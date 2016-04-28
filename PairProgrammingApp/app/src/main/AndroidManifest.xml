@@ -45,7 +45,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-
         <activity
             android:name=".activities.EditNoteActivity"
             android:label="@string/title_activity_edit_note"
@@ -72,8 +71,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.TestCasesActivity" />
         </activity>
-
-        <activity android:name=".WelcomeActivity"></activity>
+        <activity android:name=".WelcomeActivity" />
         <activity
             android:name=".activities.DisplayUnitsActivity"
             android:label="@string/title_activity_display_units"
@@ -83,6 +81,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.DisplayProjectActivity" />
         </activity>
+        <activity
+        android:name=".activities.TimerActivity"
+        android:label="@string/title_activity_Timer"
+        android:parentActivityName=".activities.MainActivity"
+        android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.MainActivity" />
+        </activity>>
+
     </application>
 
 </manifest>

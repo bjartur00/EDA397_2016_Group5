@@ -73,4 +73,14 @@
         android:layout_below="@+id/etPassword"
         android:onClick="openLoginScreen"
         android:text="Login" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timer"
+        android:id="@+id/item_timer"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:onClick="openTimer" />
 </RelativeLayout>
