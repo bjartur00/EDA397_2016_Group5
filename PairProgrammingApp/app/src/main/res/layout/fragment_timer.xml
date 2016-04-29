@@ -1,0 +1,97 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="se.chalmers.agile.pairprogrammingapp.fragments.TimerFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/item_HH"
+            android:text="HH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="40dp"/>
+
+        <TextView
+            android:id="@+id/item_MM"
+            android:text="MM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="40dp"/>
+
+        <TextView
+            android:id="@+id/item_SS"
+            android:text="SS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="40dp"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:touchscreenBlocksFocus="true"
+        android:onClick="startPauseClick">
+        <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:id="@+id/item_hours"
+            android:textAlignment="center"
+            max="23"
+            min="0" />
+
+        <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:id="@+id/item_minutes"
+            max="60"
+            min="0"
+            />
+
+        <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:id="@+id/item_seconds"
+            max="60"
+            min="0"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/item_startTime"
+        android:text="Start"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</FrameLayout>
+
+

@@ -15,4 +15,8 @@
     <string name="title_activity_display_project">DisplayProjectActivity</string>
     <string name="title_activity_display_units">DisplayUnitsActivity</string>
     <string name="title_activity_Timer">timer</string>
+    <string name="title_activity_pair_programming">Pair programming</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

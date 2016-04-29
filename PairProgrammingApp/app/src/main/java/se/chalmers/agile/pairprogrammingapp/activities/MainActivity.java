@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.model.TimeService;
 import se.chalmers.agile.pairprogrammingapp.model.User;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
+
+    // Important global variables for the timer
+    public static boolean timeIsRunning = false;
+    public static long remainingTimeMs = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openTimer(View view) {
-        Intent intent = new Intent(this, TimerActivity.class);
+        Intent intent = new Intent(this, PairProgrammingActivity.class);
         startActivity(intent);
     }
 }

@@ -81,17 +81,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.DisplayProjectActivity" />
-        </activity>
+        </activity><![CDATA[
+        >
+        ]]>
         <activity
-        android:name=".activities.TimerActivity"
-        android:label="@string/title_activity_Timer"
-        android:parentActivityName=".activities.MainActivity"
-        android:theme="@style/AppTheme.NoActionBar">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".activities.MainActivity" />
-        </activity>>
-
+            android:name=".activities.PairProgrammingActivity"
+            android:label="@string/title_activity_pair_programming"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service android:name=".model.TimeService"
+            android:exported="false"/>
     </application>
 
 </manifest>
