@@ -38,6 +38,7 @@ public class TimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
 
+        // Method when the start button is pressed.
         startB = (Button) view.findViewById(R.id.item_startTime);
         startB.setOnClickListener(new View.OnClickListener()
         {
@@ -47,16 +48,15 @@ public class TimerFragment extends Fragment {
                 item_seconds = (NumberPicker) getView().findViewById(R.id.item_seconds);
                 item_minutes = (NumberPicker) getView().findViewById(R.id.item_minutes);
                 item_hours = (NumberPicker) getView().findViewById(R.id.item_hours);
-                if (!timerHasStarted)
+                if (!MainActivity.timeIsRunning)
                 {
                     startTime = 0;
                     startTime += TimeUnit.HOURS.toMillis(item_hours.getValue());
                     startTime += TimeUnit.MINUTES.toMillis(item_minutes.getValue());
                     startTime += TimeUnit.SECONDS.toMillis(item_seconds.getValue());
                     initTimerStart(startTime);
-                    Intent intent = new Intent(getActivity(), TimeService.class);
-                    intent.putExtra("time", startTime);
-                    getActivity().startService(intent);
+                    MainActivity.timeServiceIntent.putExtra("time", startTime);
+                    getActivity().startService(MainActivity.timeServiceIntent);
                 }
                 else
                 {
@@ -90,7 +90,6 @@ public class TimerFragment extends Fragment {
         super.onStart();
         if(MainActivity.timeIsRunning){
             initTimerStart(MainActivity.remainingTimeMs);
-            Log.i("boolean", "YES");
         }
     }
 

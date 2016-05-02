@@ -26,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
 
-    // Important global variables for the timer
+    // Important global variables for the timer since the main activity will always run in the background.
     public static boolean timeIsRunning = false;
     public static long remainingTimeMs = 0;
+    public static Intent timeServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        timeServiceIntent = new Intent(this, TimeService.class);
     }
 
     public void openNotes(View view) {
