@@ -50,6 +50,8 @@ public class TimerFragment extends Fragment {
                 item_hours = (NumberPicker) getView().findViewById(R.id.item_hours);
                 if (!MainActivity.timeIsRunning)
                 {
+                    MainActivity.timeIsRunning = true;
+                    MainActivity.dontDisplayTextWhenFinished = true;
                     startTime = 0;
                     startTime += TimeUnit.HOURS.toMillis(item_hours.getValue());
                     startTime += TimeUnit.MINUTES.toMillis(item_minutes.getValue());
@@ -66,6 +68,8 @@ public class TimerFragment extends Fragment {
                     item_hours.setEnabled(true);
                     item_minutes.setEnabled(true);
                     item_seconds.setEnabled(true);
+                    MainActivity.timeIsRunning = false;
+                    MainActivity.dontDisplayTextWhenFinished = false;
                 }
             }
         });
@@ -104,6 +108,15 @@ public class TimerFragment extends Fragment {
         @Override
         public void onFinish() {
             // item_time_remain.setText("Time's up!");
+            timerHasStarted = false;
+            startB.setText("Start again");
+            item_hours.setValue(0);
+            item_minutes.setValue(0);
+            item_seconds.setValue(0);
+            item_hours.setEnabled(true);
+            item_minutes.setEnabled(true);
+            item_seconds.setEnabled(true);
+            MainActivity.timeIsRunning = false;
         }
 
         @Override

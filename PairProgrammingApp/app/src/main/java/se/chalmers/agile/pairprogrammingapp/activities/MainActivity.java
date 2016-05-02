@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean timeIsRunning = false;
     public static long remainingTimeMs = 0;
     public static Intent timeServiceIntent;
+    public static boolean dontDisplayTextWhenFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

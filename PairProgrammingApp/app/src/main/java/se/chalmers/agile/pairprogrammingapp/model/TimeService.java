@@ -1,10 +1,12 @@
 package se.chalmers.agile.pairprogrammingapp.model;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import se.chalmers.agile.pairprogrammingapp.activities.MainActivity;
 import se.chalmers.agile.pairprogrammingapp.activities.PairProgrammingActivity;
@@ -36,7 +38,6 @@ public class TimeService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MainActivity.timeIsRunning = true;
                 //Your logic that service will perform will be placed here
                 //In this example we are just looping and waits for 1000 milliseconds in each loop.
                 for (int i = 0; i < iterations; i++) {
@@ -45,8 +46,9 @@ public class TimeService extends Service {
                         Thread.sleep(1000);
                     } catch (Exception e) {
                     }
-                    if(isRunning){
-                        Log.i(TAG, "Service running");
+                    Log.i(TAG, "Service running");
+                    if(!MainActivity.timeIsRunning){
+                        break;
                     }
                 }
                 MainActivity.timeIsRunning = false;
@@ -66,10 +68,12 @@ public class TimeService extends Service {
 
     @Override
     public void onDestroy() {
-        isRunning = false;
-        Intent intent = new Intent(this, PairProgrammingActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        Log.i(TAG, "Service onDestroy");
+        if(MainActivity.dontDisplayTextWhenFinished) {
+            Context context = getApplicationContext();
+            CharSequence text = "Pair programming time's up!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 }
