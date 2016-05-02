@@ -20,9 +20,9 @@ import android.widget.EditText;
 
 
 public class MainActivity extends AppCompatActivity {
-    User firstUser = new User("John Kennet", "john@gmail.com", "1234");
-    User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");;
-    User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
+    public static User firstUser = new User("John Kennet", "john@gmail.com", "1234");
+    public static User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");;
+    public static User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
 

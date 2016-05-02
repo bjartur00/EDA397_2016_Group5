@@ -1,5 +1,9 @@
 package se.chalmers.agile.pairprogrammingapp.model;
 
+/*
+ * Copyright (C), Owner, Omar Thor Omarsson and co.
+*/
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -70,7 +74,7 @@ public class TimeService extends Service {
     public void onDestroy() {
         if(MainActivity.dontDisplayTextWhenFinished) {
             Context context = getApplicationContext();
-            CharSequence text = "Pair programming time's up!";
+            CharSequence text = "Pair programming time is up!";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();

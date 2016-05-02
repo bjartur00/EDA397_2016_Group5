@@ -1,5 +1,8 @@
 package se.chalmers.agile.pairprogrammingapp.fragments;
 
+/*
+ * Copyright (C), Owner, Omar Thor Omarsson and co.
+*/
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -107,7 +110,6 @@ public class TimerFragment extends Fragment {
 
         @Override
         public void onFinish() {
-            // item_time_remain.setText("Time's up!");
             timerHasStarted = false;
             startB.setText("Start again");
             item_hours.setValue(0);

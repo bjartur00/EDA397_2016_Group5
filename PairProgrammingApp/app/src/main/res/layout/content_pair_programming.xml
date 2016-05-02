@@ -22,5 +22,15 @@ tools:showIn="@layout/activity_pair_programming">
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_timer"
         android:name="se.chalmers.agile.pairprogrammingapp.fragments.TimerFragment" />
+
 </LinearLayout>
+
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/findPersonFragment"
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_find_person"
+        android:name="se.chalmers.agile.pairprogrammingapp.fragments.FindPersonFragment" />
 </LinearLayout>
