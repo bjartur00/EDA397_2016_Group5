@@ -35,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
 
     // For the test cases
     public TestCase[] oTestCases;
+    public User[] oMembers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //This is temporary, only to see if the request actually works
         oTestCases = TrelloUrls.getTestCases("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
+        oMembers = TrelloUrls.getMembers("temp", "EwjJOxfr", "b5edfd27ae2bb30bab309b55f7af55c3", "e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

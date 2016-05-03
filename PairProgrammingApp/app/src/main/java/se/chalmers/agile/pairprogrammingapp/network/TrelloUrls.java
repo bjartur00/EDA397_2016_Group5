@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
+import se.chalmers.agile.pairprogrammingapp.model.User;
 
 /**
  * Created by wissam on 25/04/16.
@@ -19,10 +20,29 @@ public class TrelloUrls {
         return testCases;
     }
 
+    public static User[] getMembers(String currentUsername, String boardId, String devKey, String authToken){
+        String urlRequest = "https://api.trello.com/1/boards/" + boardId + "/members?key=" + devKey +"&token=" + authToken;
+        RequestHandler.loadJsonArrayGet(urlRequest, new trelloRequestMembers(), Request.Priority.HIGH, "tag");
+        User[] users = new User[10];
+        return users;
+    }
+
     static class trelloRequestTextCases implements RequestHandler.OnJsonArrayLoadedListener {
         @Override
         public void onJsonDataLoadedSuccessfully(JSONArray data) {
             Log.i("respond", data.toString());
+        }
+        @Override
+        public void onJsonDataLoadingFailure(int errorId) {
+            Log.i("error", "error");
+        }
+    }
+
+    static class trelloRequestMembers implements RequestHandler.OnJsonArrayLoadedListener {
+        @Override
+        public void onJsonDataLoadedSuccessfully(JSONArray data) {
+            Log.i("respond", data.toString());
+            //use the data here
         }
         @Override
         public void onJsonDataLoadingFailure(int errorId) {
