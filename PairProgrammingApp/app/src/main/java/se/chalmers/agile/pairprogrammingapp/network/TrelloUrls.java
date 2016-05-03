@@ -31,7 +31,7 @@ public class TrelloUrls {
 
     public static Project[] getProjects(String userToken){
         String urlRequest = "https://api.trello.com/1/members/wanzigu?fields=username,fullName,url&boards=all&board_fields=name&key=e7f2387af84a2e749732e48d8290c204&token=" + userToken;
-        RequestHandler.loadJsonArrayGet(urlRequest, new trelloRequestTextCases(), Request.Priority.HIGH, "tag");
+        RequestHandler.loadJsonArrayGet(urlRequest, new trelloRequestProjects(), Request.Priority.HIGH, "tag");
         Project[] projects = new Project[10];
         return projects;
     }
