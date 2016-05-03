@@ -78,7 +78,7 @@ public class DisplayProjectAdapter extends RecyclerView.Adapter<DisplayProjectAd
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mProName.setText(mDataset.get(position).getmProName());
-        holder.mProProgress.setText(mDataset.get(position).getmProProgress());
+        //holder.mProProgress.setText(mDataset.get(position).getmProProgress());
     }
 
     /**

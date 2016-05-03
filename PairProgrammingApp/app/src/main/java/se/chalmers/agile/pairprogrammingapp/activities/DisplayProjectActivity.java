@@ -107,7 +107,7 @@ public class DisplayProjectActivity extends AppCompatActivity {
     private ArrayList<Project> getDataSet() {
         ArrayList results = new ArrayList<Project>();
         for (int index = 0; index < 4; index++) {
-            Project data = new Project("Project " + index, "Progress " + index);
+            Project data = new Project("Project " + Integer.toString(index), index);
             results.add(index, data);
         }
         return results;
