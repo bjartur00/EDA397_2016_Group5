@@ -6,6 +6,8 @@ import com.android.volley.Request;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.User;
 
@@ -27,6 +29,13 @@ public class TrelloUrls {
         return users;
     }
 
+    public static Project[] getProjects(String userToken){
+        String urlRequest = "https://api.trello.com/1/members/wanzigu?fields=username,fullName,url&boards=all&board_fields=name&key=e7f2387af84a2e749732e48d8290c204&token=" + userToken;
+        RequestHandler.loadJsonArrayGet(urlRequest, new trelloRequestTextCases(), Request.Priority.HIGH, "tag");
+        Project[] projects = new Project[10];
+        return projects;
+    }
+
     static class trelloRequestTextCases implements RequestHandler.OnJsonArrayLoadedListener {
         @Override
         public void onJsonDataLoadedSuccessfully(JSONArray data) {
@@ -43,6 +52,17 @@ public class TrelloUrls {
         public void onJsonDataLoadedSuccessfully(JSONArray data) {
             Log.i("respond", data.toString());
             //use the data here
+        }
+        @Override
+        public void onJsonDataLoadingFailure(int errorId) {
+            Log.i("error", "error");
+        }
+    }
+
+    static class trelloRequestProjects implements RequestHandler.OnJsonArrayLoadedListener {
+        @Override
+        public void onJsonDataLoadedSuccessfully(JSONArray data) {
+            Log.i("respond", data.toString());
         }
         @Override
         public void onJsonDataLoadingFailure(int errorId) {

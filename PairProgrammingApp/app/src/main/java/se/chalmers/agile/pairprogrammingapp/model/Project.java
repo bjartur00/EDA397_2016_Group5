@@ -9,27 +9,28 @@ package se.chalmers.agile.pairprogrammingapp.model;
  */
 public class Project {
     private String mProName;
-    private String mProProgress;
+//    private String mProProgress;
+    private int mProId;
 
-    public Project (String proName, String proProgress){
+    public Project (String proName, int proId){
         mProName = proName;
-        mProProgress = proProgress;
+        mProId = proId;
     }
 
     public String getmProName(){
         return mProName;
     }
 
-    public void setmProName(String mProName) {
-        this.mProName = mProName;
+    public void setmProName(String ProName) {
+        this.mProName = ProName;
     }
 
-    public String getmProProgress(){
-        return mProProgress;
+    public int getmProId(){
+        return mProId;
     }
 
-    public void setmProProgress(String mProProgress){
-        this.mProProgress = mProProgress;
+    public void setmProId(int proId){
+        this.mProId = proId;
     }
 }
 
