@@ -11,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.TimeService;
 import se.chalmers.agile.pairprogrammingapp.model.User;
+import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 
@@ -23,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     public static User firstUser = new User("John Kennet", "john@gmail.com", "1234");
     public static User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");;
     public static User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
-
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
 
     // Important global variables for the timer since the main activity will always run in the background.
@@ -32,9 +33,15 @@ public class MainActivity extends AppCompatActivity {
     public static Intent timeServiceIntent;
     public static boolean dontDisplayTextWhenFinished = false;
 
+    // For the test cases
+    public TestCase[] oTestCases;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //This is temporary, only to see if the request actually works
+        oTestCases = TrelloUrls.getTestCases("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

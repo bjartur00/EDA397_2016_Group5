@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="se.chalmers.agile.pairprogrammingapp">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".PairProgrammingApplication"
         android:allowBackup="true"
