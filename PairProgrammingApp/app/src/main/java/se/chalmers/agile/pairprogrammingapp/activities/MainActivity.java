@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SecretKeys.go();
         super.onCreate(savedInstanceState);
         //This is temporary, only to see if the request actually works
         oMembers = TrelloUrls.getMembers("temp", "EwjJOxfr", "e7f2387af84a2e749732e48d8290c204", "e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
