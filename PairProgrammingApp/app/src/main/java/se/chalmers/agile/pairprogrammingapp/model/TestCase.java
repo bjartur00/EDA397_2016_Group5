@@ -3,7 +3,7 @@ package se.chalmers.agile.pairprogrammingapp.model;
 /*
  * Copyright (C), Owner, Omar Thor Omarsson and co.
 */
-public class TestCase {
+public class TestCase implements java.io.Serializable{
     private String title;
     private String description;
     // 1 = Test passed
@@ -12,11 +12,22 @@ public class TestCase {
     private int status;
     private int id;
 
-    public TestCase(String title, String description, int status, int id) {
+    public String getListID() {
+        return listID;
+    }
+
+    public void setListID(String listID) {
+        this.listID = listID;
+    }
+
+    private String listID;
+
+    public TestCase(String title, String description, int status, int id, String listID) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.id = id;
+        this.listID = listID;
     }
 
     public String getTitle() {

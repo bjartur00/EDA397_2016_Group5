@@ -22,8 +22,10 @@ import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.activities.DisplayProjectActivity;
+import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.modelview.DisplayUnitAdapter;
+import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
 /**
@@ -43,30 +45,20 @@ public class DisplayUnitsActivity extends AppCompatActivity {
     //contains the layout of the views inside of the Recycler view.
     private RecyclerView.LayoutManager mLayoutManager;
 
+    public static ArrayList<TestCase> mTestCases = new ArrayList<TestCase>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        populateTestCases();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_units);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Intent intent = getIntent();
-
-//        ((TextView)findViewById(R.id.unit_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
-
         message = intent.getStringExtra(DisplayProjectActivity.EXTRA_MESSAGE);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.unit_list);
 
         //use this seeting to improve performance if you know that
@@ -76,8 +68,10 @@ public class DisplayUnitsActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        ArrayList<Unit> u = (ArrayList<Unit>)getIntent().getSerializableExtra("mUnits");
+
         //specify an adapter
-        mAdapter = new DisplayUnitAdapter(getDataSet());
+        mAdapter = new DisplayUnitAdapter((ArrayList<Unit>)getIntent().getSerializableExtra("mUnits"));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -92,47 +86,24 @@ public class DisplayUnitsActivity extends AppCompatActivity {
             public void onItemClick(int position, View v) {
                 Log.i(LOG_TAG, " Clicked on Item " + position);
                 Intent intent = new Intent(DisplayUnitsActivity.this, TestCasesActivity.class);
-                TextView textview = (TextView) ((ViewGroup) v).getChildAt(0);
-
+                TextView textview = (TextView) ((ViewGroup) v).findViewById(R.id.unit_id);
                 message = textview.getText().toString();
-
-                intent.putExtra(EXTRA_MESSAGE, message);
+                intent.putExtra("mTestCases", mTestCases);
+                intent.putExtra("listID", message);
                 startActivity(intent);
-
             }
         });
+    }
+
+    // Gets the test cases from Trello.
+    private void populateTestCases() {
+        mTestCases.clear();
+        mTestCases = TrelloUrls.getTestCases("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
     }
 
     /**
      * Creates the data to be filled in the activity.
      * @return the unit data to be displayed.
      */
-    private ArrayList<Unit> getDataSet() {
-        ArrayList results = new ArrayList<Unit>();
-
-        if (message.equals("Project 0")) {
-            for (int index = 0; index < 4; index++) {
-                Unit data = new Unit("Project 0, Unit " + index, "Progress " + index);
-                results.add(index, data);
-            }
-        } else if (message.equals("Project 1")) {
-            for (int index = 0; index < 4; index++) {
-                Unit data = new Unit("Project 1, Unit " + index, "Progress " + index);
-                results.add(index, data);
-            }
-        } else if (message.equals("Project 2")) {
-            for (int index = 0; index < 4; index++) {
-                Unit data = new Unit("Project 2, Unit " + index, "Progress " + index);
-                results.add(index, data);
-            }
-        } else if (message.equals("Project 3")) {
-            for (int index = 0; index < 4; index++) {
-                Unit data = new Unit("Project 3, Unit " + index, "Progress " + index);
-                results.add(index, data);
-            }
-        }
-
-        return results;
-    }
 
 }

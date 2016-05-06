@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.modelview.TestCasesListAdapter;
+import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 
 // This class is used for achieving functionality in the Test Case view.
 public class TestCasesActivity extends AppCompatActivity implements TestCasesListAdapter.OnTestCaseItemClickedListener {
@@ -31,6 +32,8 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
     //Used to create the main view for the list of test cases
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mTestCases = (ArrayList<TestCase>)getIntent().getSerializableExtra("mTestCases");
+        String k = this.getIntent().getExtras().getString("listID");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_cases);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -44,20 +47,7 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (mTestCases.size() <= 0) {
-            populateTestCases();
-        }
         populateRecyclerView();
-    }
-
-    // Creates dummy test cases (Hard coded). This will be deleted when Trello has been implemented.
-    private void populateTestCases() {
-        mTestCases.add(new TestCase("Display test cases", "For each module the test cases should be displayed in a list.", 1, 0));
-        mTestCases.add(new TestCase("Display test cases status", "The status of each test case shall be displayed with a appropriate color.", 2, 0));
-        mTestCases.add(new TestCase("Change status of a test case", "The user is able to change the status of each test case.", 3, 0));
-        mTestCases.add(new TestCase("Test case 4", "Some basic description", 2, 0));
-        mTestCases.add(new TestCase("Test case 5", "Some basic description", 3, 0));
-        mTestCases.add(new TestCase("Test case 6", "Some basic description", 1, 0));
     }
 
     // At this point not used, will be used later. The main purpose is to get the item that was clicked

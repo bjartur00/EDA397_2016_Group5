@@ -27,7 +27,7 @@ public class NewTestCaseActivity extends AppCompatActivity {
         TestCasesActivity.mTestCases.add(
                 new TestCase(
                         ((EditText) this.findViewById(R.id.item_TestCaseTitle)).getText().toString(),
-                        ((EditText) this.findViewById(R.id.item_TestCaseDescription)).getText().toString(), 3, 0));
+                        ((EditText) this.findViewById(R.id.item_TestCaseDescription)).getText().toString(), 3, 0, ""));
         Intent intent = new Intent(NewTestCaseActivity.this, TestCasesActivity.class);
         startActivity(intent);
     }

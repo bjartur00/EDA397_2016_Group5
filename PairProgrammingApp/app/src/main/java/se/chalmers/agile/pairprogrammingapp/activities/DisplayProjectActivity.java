@@ -18,9 +18,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.modelview.DisplayProjectAdapter;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
 /**
@@ -40,8 +42,11 @@ public class DisplayProjectActivity extends AppCompatActivity {
     //contains the layout of the views inside of the Recycler view.
     private RecyclerView.LayoutManager mLayoutManager;
 
+    public static ArrayList<Unit> mUnits = new ArrayList<Unit>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        populateUnits();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_project);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,7 +80,6 @@ public class DisplayProjectActivity extends AppCompatActivity {
         //specify an adapter
         mAdapter = new DisplayProjectAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     /**
@@ -90,9 +94,8 @@ public class DisplayProjectActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, " Clicked on Item " + position);
                 Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
                 TextView textview = (TextView)((ViewGroup) v).getChildAt(0);
-
                 message = textview.getText().toString();
-
+                intent.putExtra("mUnits", mUnits);
                 intent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(intent);
 
@@ -111,6 +114,12 @@ public class DisplayProjectActivity extends AppCompatActivity {
             results.add(index, data);
         }
         return results;
+    }
+
+    // Gets the units from Trello.
+    private void populateUnits() {
+        mUnits.clear();
+        mUnits = TrelloUrls.getUnits("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
     }
 
 }

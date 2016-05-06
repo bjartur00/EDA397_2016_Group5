@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public static boolean dontDisplayTextWhenFinished = false;
 
     // For the test cases
-    public TestCase[] oTestCases;
     public User[] oMembers;
     public Project[] mProjects;
 
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //This is temporary, only to see if the request actually works
-        oTestCases = TrelloUrls.getTestCases("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
         oMembers = TrelloUrls.getMembers("temp", "EwjJOxfr", "e7f2387af84a2e749732e48d8290c204", "e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
         mProjects = TrelloUrls.getProjects("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
 

@@ -122,9 +122,9 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
                             v.setBackgroundColor(Color.WHITE);
                             break;
                     }
-                }  else if (v.getId() == R.id.item_testCaseChange) {
+                }  else if (v.getId() == R.id.btnDelete) {
                     listener.onChangeTestCaseClicked(getAdapterPosition());
-                }  else if (v.getId() == R.id.item_testCaseDelete) {
+                }  else if (v.getId() == R.id.btnDelete) {
                     listener.onDeleteTestCaseClicked(getAdapterPosition());
                 }
             }

@@ -30,10 +30,12 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
 
         public TextView mUnitName;
         public TextView mUnitProgress;
+        public TextView mID;
         public ViewHolder(View v) {
             super(v);
             mUnitName = (TextView) v.findViewById(R.id.unit_name);
             mUnitProgress = (TextView) v.findViewById(R.id.unit_progress);
+            mID = (TextView) v.findViewById(R.id.unit_id);
             Log.i(LOG_TAG, "Addling Listener");
             v.setOnClickListener(this);
         }
@@ -80,6 +82,7 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
         // - replace the contents of the view with that element
         holder.mUnitName.setText(mDataset.get(position).getmUnitName());
         holder.mUnitProgress.setText(mDataset.get(position).getmUnitProgress());
+        holder.mID.setText(mDataset.get(position).getmID());
     }
 
     /**
