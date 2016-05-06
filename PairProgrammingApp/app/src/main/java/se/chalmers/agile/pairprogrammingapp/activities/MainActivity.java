@@ -3,12 +3,23 @@ package se.chalmers.agile.pairprogrammingapp.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TrelloApi;
+import org.scribe.model.Token;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
+import java.util.concurrent.ExecutionException;
 
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
@@ -16,16 +27,18 @@ import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.TimeService;
 import se.chalmers.agile.pairprogrammingapp.model.User;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
+import se.chalmers.agile.pairprogrammingapp.utils.Constants;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
+import se.chalmers.agile.pairprogrammingapp.utils.SecretKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
-
-import android.widget.EditText;
 
 
 public class MainActivity extends AppCompatActivity {
     public static User firstUser = new User("John Kennet", "john@gmail.com", "1234");
-    public static User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");;
+    public static User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");
+    ;
     public static User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
+
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
 
     // Important global variables for the timer since the main activity will always run in the background.
@@ -34,8 +47,12 @@ public class MainActivity extends AppCompatActivity {
     public static Intent timeServiceIntent;
     public static boolean dontDisplayTextWhenFinished = false;
 
+    private OAuthService service;
+    private static Token requestToken;
+
     // For the test cases
     public User[] oMembers;
+
     public Project[] mProjects;
 
     @Override
@@ -49,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         timeServiceIntent = new Intent(this, TimeService.class);
+
+        // Create the service to authenticate with Trello API
+        service = new ServiceBuilder()
+                .provider(TrelloApi.class)
+                .apiKey(SecretKeys.API_KEY)
+                .apiSecret(SecretKeys.API_SECRET)
+                .callback(Constants.CALLBACKURL)
+                .build();
     }
 
     public void openNotes(View view) {
@@ -57,63 +82,87 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openTestCases(View view) {
-        //((Button) view).setText("clicked");
-        Intent intent = new Intent(this, TestCasesActivity.class);
-        startActivity(intent);
+    public void loginViaTrello(View view) {
+        String authUrl = null;
+        try {
+            authUrl = new MainActivity.authUrl().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl)));
     }
 
-    public void openLoginScreen(View view) {
-        final EditText etEmail = (EditText) findViewById(R.id.etEmail);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-        AuthenticateUser(email, password);
-    }
-
-    public void AuthenticateUser(String email, String password) {
-        // Authenticates the user. If the email and password are correct, then
-        // the user is logged in. Otherwise an error message will be displayed.
-        if (checkEmailAndPassword(firstUser, email, password)) {
-            logInUser(firstUser);
-        } else if (checkEmailAndPassword(secondUser, email, password)){
-            logInUser(secondUser);
-        } else if (checkEmailAndPassword(thirdUser, email, password)) {
-            logInUser(thirdUser);
-        } else {
-            displayErrorMessage();
+    /**
+     * Gets the authorization URL
+     */
+    private class authUrl extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            requestToken = service.getRequestToken();
+            return service.getAuthorizationUrl(requestToken);
         }
     }
 
-    public boolean checkEmailAndPassword(User user, String email, String password){
-        // Checks if the email and password match the user
-        return (email.matches(user.getEmail()) && password.matches(user.getPassword()));
+    /**
+     * Gets the access token and stores it
+     */
+    private class OauthEnd extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            final String verifier = params[0];
+            final Verifier v = new Verifier(verifier);
+
+            // Store access token
+            final Token accessToken = service.getAccessToken(requestToken, v);
+
+            // Store the access token
+            final SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS_NAME, 0).edit();
+            editor.putString(Constants.PREF_ACCESS_TOKEN, accessToken.getToken());
+            editor.putString(Constants.PREF_ACCESS_SECRET, accessToken.getSecret());
+            editor.commit();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // Go to projects activity
+            gotoProjectsActivity();
+        }
     }
 
-    public void logInUser(User user) {
-        // Logs the user in that has already been authenticated.
-        Intent loginIntent = new Intent(MainActivity.this, DisplayProjectActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(ExtraKeys.USERNAME, user.getName());
-        bundle.putString("email", user.getEmail());
-        loginIntent.putExtras(bundle);
-        MainActivity.this.startActivity(loginIntent);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Each time this activity resumes, check if there are stored info
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
+
+        if (prefs.getString(Constants.PREF_ACCESS_TOKEN, null) != null && prefs.getString(Constants.PREF_ACCESS_SECRET, null) != null) {
+            // Token has been found
+            // Go to projects activity
+            gotoProjectsActivity();
+        } else {
+            // Check if it's coming back from authentication process
+            final Uri uri = this.getIntent().getData();
+            // Check whether the uri is valid to do an OAuth Dance
+            if (uri != null && uri.toString().startsWith(Constants.CALLBACKURL)) {
+                // Get the OAuth verifier from the URI
+                String verifier = uri.getQueryParameter("oauth_verifier");
+                // If the verifier is not null
+                if (verifier != null) new OauthEnd().execute(verifier);
+            }
+        }
     }
 
-    public void displayErrorMessage(){
-        // Username or password false, display and an error
-        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
-        dlgAlert.setMessage("Wrong password or username");
-        dlgAlert.setTitle("Error Message");
-        dlgAlert.setPositiveButton("OK", null);
-        dlgAlert.setCancelable(true);
-        dlgAlert.create().show();
-        dlgAlert.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
+    /**
+     * Goes to the projects activity and finishes this activity
+     */
+    private void gotoProjectsActivity() {
+        startActivity(new Intent(this, DisplayProjectActivity.class));
+        // Finish this activity
+        finish();
     }
 
     @Override

@@ -4,13 +4,17 @@ package se.chalmers.agile.pairprogrammingapp.activities;
  * Created by wanziguelva on 01-04-24.
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.modelview.DisplayProjectAdapter;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
@@ -94,7 +99,9 @@ public class DisplayProjectActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, " Clicked on Item " + position);
                 Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
                 TextView textview = (TextView)((ViewGroup) v).getChildAt(0);
+
                 message = textview.getText().toString();
+                
                 intent.putExtra("mUnits", mUnits);
                 intent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(intent);
@@ -120,6 +127,28 @@ public class DisplayProjectActivity extends AppCompatActivity {
     private void populateUnits() {
         mUnits.clear();
         mUnits = TrelloUrls.getUnits("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_display_projects, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            ((PairProgrammingApplication) getApplication()).showLogoutDialog(this);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

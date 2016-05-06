@@ -80,7 +80,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
             // set dialog message
             alertDialogBuilder
-                    .setMessage("Are you sure you want to discard your changes!")
+                    .setMessage("Are you sure you want to discard your changes?")
                     .setCancelable(false)
                     .setPositiveButton("Discard",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
@@ -111,7 +111,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
             // set dialog message
             alertDialogBuilder
-                    .setMessage("Are you sure you want to save your changes!")
+                    .setMessage("Are you sure you want to save your changes?")
                     .setCancelable(false)
                     .setPositiveButton("Save",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
