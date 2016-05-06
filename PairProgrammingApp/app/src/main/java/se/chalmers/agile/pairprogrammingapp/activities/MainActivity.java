@@ -1,7 +1,5 @@
 package se.chalmers.agile.pairprogrammingapp.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,18 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TrelloApi;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
-
 import java.util.concurrent.ExecutionException;
-
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
-import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.TimeService;
 import se.chalmers.agile.pairprogrammingapp.model.User;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
@@ -36,7 +30,6 @@ import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 public class MainActivity extends AppCompatActivity {
     public static User firstUser = new User("John Kennet", "john@gmail.com", "1234");
     public static User secondUser = new User("Sarah Smith", "sarah@gmail.com", "abcd");
-    ;
     public static User thirdUser = new User("Tim Burton", "tim@gmail.com", "1234abcd");
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
@@ -57,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SecretKeys.go();
         super.onCreate(savedInstanceState);
         //This is temporary, only to see if the request actually works
         oMembers = TrelloUrls.getMembers("temp", "EwjJOxfr", "e7f2387af84a2e749732e48d8290c204", "e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
         mProjects = TrelloUrls.getProjects("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
