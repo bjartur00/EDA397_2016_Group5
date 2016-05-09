@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Opens the timer activity
     public void openTimer(View view) {
         Intent intent = new Intent(this, PairProgrammingActivity.class);
         startActivity(intent);

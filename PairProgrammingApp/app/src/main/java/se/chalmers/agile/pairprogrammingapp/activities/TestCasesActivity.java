@@ -25,8 +25,9 @@ import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 // This class is used for achieving functionality in the Test Case view.
 public class TestCasesActivity extends AppCompatActivity implements TestCasesListAdapter.OnTestCaseItemClickedListener {
 
-    private final static String KEY_APP_ID = "KEY_APP_ID";
+    // Variable that holds all the test cases that are displayed
     public static ArrayList<TestCase> mTestCases = new ArrayList<>();
+    // Variable the hold the view adapter.
     private TestCasesListAdapter mAdapter;
 
     //Used to create the main view for the list of test cases

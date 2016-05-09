@@ -33,13 +33,10 @@ import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
  */
 public class DisplayUnitsActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
     public String message = null;
 
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-
     private RecyclerView mRecyclerView;
-
     private RecyclerView.Adapter mAdapter;
 
     //contains the layout of the views inside of the Recycler view.
@@ -64,10 +61,10 @@ public class DisplayUnitsActivity extends AppCompatActivity {
         //use this seeting to improve performance if you know that
         //changes in content do not change the layout size of the Recycler view
         mRecyclerView.setHasFixedSize(true);
+
         //use a lienar layout manager, the views inside the recycler view should be vertically linear
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         ArrayList<Unit> u = (ArrayList<Unit>)getIntent().getSerializableExtra("mUnits");
 
         //specify an adapter
@@ -84,11 +81,13 @@ public class DisplayUnitsActivity extends AppCompatActivity {
         ((DisplayUnitAdapter) mAdapter).setOnItemClickListener(new DisplayUnitAdapter.MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
+                ArrayList<TestCase> mRet = new ArrayList<TestCase>();
                 Log.i(LOG_TAG, " Clicked on Item " + position);
                 Intent intent = new Intent(DisplayUnitsActivity.this, TestCasesActivity.class);
-                TextView textview = (TextView) ((ViewGroup) v).findViewById(R.id.unit_id);
-                message = textview.getText().toString();
-                intent.putExtra("mTestCases", mTestCases);
+                TextView unit_id = (TextView) ((ViewGroup) v).findViewById(R.id.unit_id);
+                message = unit_id.getText().toString();
+                mRet = selectTestCases(message);
+                intent.putExtra("mTestCases", mRet);
                 intent.putExtra("listID", message);
                 startActivity(intent);
             }
@@ -101,9 +100,14 @@ public class DisplayUnitsActivity extends AppCompatActivity {
         mTestCases = TrelloUrls.getTestCases("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
     }
 
-    /**
-     * Creates the data to be filled in the activity.
-     * @return the unit data to be displayed.
-     */
-
+    // Can select only the test cases that correspond to the "unit_id" of the unit list.
+    private static ArrayList<TestCase> selectTestCases(String unit_id){
+        ArrayList<TestCase> mRet = new ArrayList<TestCase>();
+        for (int i = 0; i < mTestCases.size(); i++) {
+            if(mTestCases.get(i).getListID().contains(unit_id)){
+               mRet.add(mRet.size(), mTestCases.get(i));
+            }
+        }
+        return mRet;
+    }
 }
