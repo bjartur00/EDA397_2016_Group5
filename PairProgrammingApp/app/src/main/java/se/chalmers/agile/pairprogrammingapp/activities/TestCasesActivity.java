@@ -146,15 +146,4 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
         alertDialog.show();
     }
 
-
-    // Can select only the test cases that correspond to the "unit_id" of the unit list.
-    private static ArrayList<TestCase> selectTestCases(String unit_id) {
-        ArrayList<TestCase> mRet = new ArrayList<TestCase>();
-        for (int i = 0; i < mTestCases.size(); i++) {
-            if (mTestCases.get(i).getListID().contains(unit_id)) {
-                mRet.add(mRet.size(), mTestCases.get(i));
-            }
-        }
-        return mRet;
-    }
 }

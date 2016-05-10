@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
+import se.chalmers.agile.pairprogrammingapp.fragments.TestCasesFragment;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 
 
@@ -64,7 +65,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
         notifyItemChanged(position);
     }
 
-    public static class TestCaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class TestCaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private OnTestCaseItemClickedListener listener;
         private int position;
 
@@ -83,7 +84,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
 
         public void setData(int position, TestCase testCase) {
             this.position = position;
-            TestCase currentTestCase = TestCasesActivity.mTestCases.get(position);
+            TestCase currentTestCase = testCases.get(position);
 
             switch (currentTestCase.getStatus()) {
                 case 1:  itemView.setBackgroundColor(Color.GREEN);
@@ -104,7 +105,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
         public void onClick(View v) {
             if (listener != null) {
                 if (v.getId() == R.id.testCase) {
-                    TestCase clickedTestCase = TestCasesActivity.mTestCases.get(position);
+                    TestCase clickedTestCase = testCases.get(position);
                     switch (clickedTestCase.getStatus()) {
                         case 1:
                             v.setBackgroundColor(Color.YELLOW);
