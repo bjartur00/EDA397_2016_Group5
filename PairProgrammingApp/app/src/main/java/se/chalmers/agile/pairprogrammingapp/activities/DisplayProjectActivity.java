@@ -12,13 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
+
+import com.android.volley.Request;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -27,22 +28,23 @@ import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.modelview.DisplayProjectAdapter;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.network.JsonSerializer;
+import se.chalmers.agile.pairprogrammingapp.network.RequestHandler;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
 /**
  * This activity displays the list of projects assigned to the user.
  */
-public class DisplayProjectActivity extends AppCompatActivity {
+public class DisplayProjectActivity extends AppCompatActivity implements DisplayProjectAdapter.OnProjectItemClickedListener {
+    private final static String TAG = "se.chalmers.agile.pairprogrammingapp.activities.DisplayProjectActivity";
 
     public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
-    public String message = null;
 
-    private static String LOG_TAG = "MyRecyclerViewAdapter";
-
+    private ArrayList<Project> mProjects;
     private RecyclerView mRecyclerView;
 
-    private RecyclerView.Adapter mAdapter;
+    private DisplayProjectAdapter mAdapter;
 
     //contains the layout of the views inside of the Recycler view.
     private RecyclerView.LayoutManager mLayoutManager;
@@ -51,7 +53,6 @@ public class DisplayProjectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        populateUnits();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_project);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -70,7 +71,7 @@ public class DisplayProjectActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        ((TextView)findViewById(R.id.project_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
+        ((TextView) findViewById(R.id.project_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
 
         //assist the variable to find its targeting layout in the layout folder.
         mRecyclerView = (RecyclerView) findViewById(R.id.project_list);
@@ -82,52 +83,51 @@ public class DisplayProjectActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //specify an adapter
-        mAdapter = new DisplayProjectAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
-    }
+        // Get the data
+        RequestHandler.loadJsonArrayGet(TrelloUrls.getProjectsUrl("me", ((PairProgrammingApplication) DisplayProjectActivity.this.getApplication()).getToken()),
+                new RequestHandler.OnJsonArrayLoadedListener() {
+                    @Override
+                    public void onJsonDataLoadedSuccessfully(JSONArray data) {
+                        mProjects = JsonSerializer.json2Projects(data);
+                        mAdapter = new DisplayProjectAdapter(mProjects, DisplayProjectActivity.this);
+                        mRecyclerView.setAdapter(mAdapter);
 
-    /**
-     * This method contains an onClickListener that invokes the DisplayUnitsActivity.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ((DisplayProjectAdapter) mAdapter).setOnItemClickListener(new DisplayProjectAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Log.i(LOG_TAG, " Clicked on Item " + position);
-                Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
-                TextView textview = (TextView)((ViewGroup) v).getChildAt(0);
+                        /*((DisplayProjectAdapter) mAdapter).setOnItemClickListener(new DisplayProjectAdapter.MyClickListener() {
+                            @Override
+                            public void onItemClick(int position, View v) {
+                                Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
+                                TextView textview = (TextView) ((ViewGroup) v).getChildAt(0);
 
-                message = textview.getText().toString();
-                
-                intent.putExtra("mUnits", mUnits);
-                intent.putExtra(EXTRA_MESSAGE, message);
-                startActivity(intent);
+                                message = textview.getText().toString();
 
-            }
-        });
+                                intent.putExtra("mUnits", mUnits);
+                                intent.putExtra(EXTRA_MESSAGE, message);
+                                startActivity(intent);
+
+                            }
+                        });*/
+                    }
+
+                    @Override
+                    public void onJsonDataLoadingFailure(int errorId) {
+
+                    }
+                }, Request.Priority.HIGH, TAG);
     }
 
     /**
      * Creates the data to be filled in the activity.
+     *
      * @return the project data to be displayed.
      */
-    private ArrayList<Project> getDataSet() {
+    /*private ArrayList<Project> getDataSet() {
         ArrayList results = new ArrayList<Project>();
         for (int index = 0; index < 4; index++) {
             Project data = new Project("Project " + Integer.toString(index), index);
             results.add(index, data);
         }
         return results;
-    }
-
-    // Gets the units from Trello.
-    private void populateUnits() {
-        mUnits.clear();
-        mUnits = TrelloUrls.getUnits("e1c839e03bdbaf72f5e798a2a918c2e901a6446593db8ea9679c86952c6c2084");
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,11 +144,43 @@ public class DisplayProjectActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            ((PairProgrammingApplication) getApplication()).showLogoutDialog(this);
+            //((PairProgrammingApplication) getApplication()).showLogoutDialog(DisplayProjectActivity.this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            // set title
+            alertDialogBuilder.setTitle("Log out");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to log out?")
+                    .setCancelable(false)
+                    .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            ((PairProgrammingApplication) getApplication()).logOut(DisplayProjectActivity.this);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Close dialog
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onProjectItemClicked(int position) {
+        Intent intent = new Intent(this, DisplayUnitsActivity.class);
+        intent.putExtra(ExtraKeys.PROJECT_ID, mProjects.get(position).getProjectId());
+        startActivity(intent);
+    }
 }

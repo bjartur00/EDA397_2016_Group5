@@ -13,20 +13,5 @@
         android:paddingTop="5dp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
-    <TextView
-        android:id="@+id/unit_id"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:textSize="0dp"
-        />
-
-    <TextView
-        android:id="@+id/unit_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 </LinearLayout>

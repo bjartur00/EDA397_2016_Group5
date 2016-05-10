@@ -5,7 +5,6 @@ package se.chalmers.agile.pairprogrammingapp.modelview;
  */
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,55 +19,25 @@ import se.chalmers.agile.pairprogrammingapp.model.Unit;
  * This class serves as an adapter to format the Unit object into recyclerview for the DisplayUnitActivity.
  */
 public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.ViewHolder> {
+    private ArrayList<Unit> mDataSet;
+    private static OnUnitItemClickedListener mListener;
 
-    private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private ArrayList<Unit> mDataset;
-    private static MyClickListener myClickListener;
-
-    public static class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
-
-        public TextView mUnitName;
-        public TextView mUnitProgress;
-        public TextView mID;
-        public ViewHolder(View v) {
-            super(v);
-            mUnitName = (TextView) v.findViewById(R.id.unit_name);
-            mUnitProgress = (TextView) v.findViewById(R.id.unit_progress);
-            mID = (TextView) v.findViewById(R.id.unit_id);
-            Log.i(LOG_TAG, "Addling Listener");
-            v.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            myClickListener.onItemClick(getPosition(),v);
-        }
+    public DisplayUnitAdapter(ArrayList<Unit> data, OnUnitItemClickedListener listener) {
+        mDataSet = data;
+        mListener = listener;
     }
-
-    public void setOnItemClickListener (MyClickListener myClickListener){
-        this.myClickListener = myClickListener;
-    }
-
-    /**
-     * Provide a suitable constructor (depends on the kind of dataset)
-     */
-    public DisplayUnitAdapter (ArrayList<Unit> myDataset){
-        mDataset = myDataset;
-    }
-
 
     /**
      * Create new views (invoked by the layout manager)
      */
     @Override
-    public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         //create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.unit_items, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_unit, parent, false);
 
         //the viewholder will hold the newly created textview
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, mListener);
         return vh;
 
     }
@@ -77,20 +46,38 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
      * Replace the contents of a view (invoked by the layout manager)
      */
     @Override
-    public void onBindViewHolder (ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.mUnitName.setText(mDataset.get(position).getmUnitName());
-        holder.mUnitProgress.setText(mDataset.get(position).getmUnitProgress());
-        holder.mID.setText(mDataset.get(position).getmID());
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.mUnitName.setText(mDataSet.get(position).getUnitName());
     }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
+
+        public TextView mUnitName;
+        private OnUnitItemClickedListener mListener;
+
+        public ViewHolder(View v, OnUnitItemClickedListener listener) {
+            super(v);
+            mListener = listener;
+            mUnitName = (TextView) v.findViewById(R.id.unit_name);
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onUnitItemClick(getAdapterPosition());
+        }
+    }
+
+
+
 
     /**
      * Used when adding a new item.
      */
     // TODO: will be implemented later on
     public void addItem(Unit Unit, int index) {
-        mDataset.add(index, Unit);
+        mDataSet.add(index, Unit);
         notifyItemInserted(index);
     }
 
@@ -98,7 +85,7 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
      * Used when deleting an item
      */
     public void deleteItem(int index) {
-        mDataset.remove(index);
+        mDataSet.remove(index);
         notifyItemRemoved(index);
     }
 
@@ -107,10 +94,10 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
      */
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataSet.size();
     }
 
-    public interface MyClickListener {
-        public void onItemClick(int position, View v);
+    public interface OnUnitItemClickedListener {
+        void onUnitItemClick(int position);
     }
 }

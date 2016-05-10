@@ -8,4 +8,6 @@ public class ExtraKeys {
     public static final String NOTE_POSITION = "NOTE_POSITION";
     public static final String NOTE_CONTENT = "NOTE_CONTENT";
     public static final String USERNAME = "USERNAME";
+    public static final String PROJECT_ID = "PROJECT_ID";
+    public static final String UNIT_ID = "UNIT_ID";
 }

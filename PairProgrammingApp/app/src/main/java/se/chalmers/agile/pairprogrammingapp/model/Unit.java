@@ -9,37 +9,21 @@ package se.chalmers.agile.pairprogrammingapp.model;
  */
 public class Unit implements java.io.Serializable{
     private String mUnitName;
-    private String mUnitProgress;
-    private String mID;
+    //private String mUnitProgress;
+    private String mId;
 
-    public Unit (String UnitName, String UnitProgress, String ID){
-        mUnitName = UnitName;
-        mUnitProgress = UnitProgress;
-        mID = ID;
+    public Unit (String unitName, String id){
+        mUnitName = unitName;
+        mId = id;
     }
 
-    public String getmUnitName(){
+    public String getUnitName(){
         return mUnitName;
     }
 
-    public void setmUnitName(String mUnitName) {
-        this.mUnitName = mUnitName;
+    public String getID(){
+        return mId;
     }
 
-    public String getmUnitProgress(){
-        return mUnitProgress;
-    }
-
-    public void setmUnitProgress(String mUnitProgress){
-        this.mUnitProgress = mUnitProgress;
-    }
-
-    public String getmID(){
-        return mID;
-    }
-
-    public void setmID(String mID){
-        this.mID = mID;
-    }
 
 }

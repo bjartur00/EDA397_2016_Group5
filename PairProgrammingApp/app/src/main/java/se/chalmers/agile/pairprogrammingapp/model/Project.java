@@ -8,29 +8,20 @@ package se.chalmers.agile.pairprogrammingapp.model;
  * This class specifies the Project object
  */
 public class Project {
-    private String mProName;
-//    private String mProProgress;
-    private int mProId;
+    private String mProjectName;
+    private String mProjectId;
 
-    public Project (String proName, int proId){
-        mProName = proName;
-        mProId = proId;
+    public Project (String projectName, String projectId){
+        mProjectName = projectName;
+        mProjectId = projectId;
     }
 
-    public String getmProName(){
-        return mProName;
+    public String getProjectName() {
+        return mProjectName;
     }
 
-    public void setmProName(String ProName) {
-        this.mProName = ProName;
-    }
-
-    public int getmProId(){
-        return mProId;
-    }
-
-    public void setmProId(int proId){
-        this.mProId = proId;
+    public String getProjectId() {
+        return mProjectId;
     }
 }
 
