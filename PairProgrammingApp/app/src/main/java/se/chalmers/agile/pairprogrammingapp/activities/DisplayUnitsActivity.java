@@ -89,7 +89,7 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
 
     @Override
     public void onUnitItemClick(int position) {
-        Intent intent = new Intent(this, TestCasesActivity.class);
+        Intent intent = new Intent(this, WorkSessionActivity.class);
         intent.putExtra(ExtraKeys.UNIT_ID, mUnits.get(position).getID());
         startActivity(intent);
     }

@@ -21,10 +21,7 @@ import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.activities.MainActivity;
 import se.chalmers.agile.pairprogrammingapp.model.TimeService;
 
-
 public class TimerFragment extends Fragment {
-
-
     private static final String tag = "Main";
     private MalibuCountDownTimer countDownTimer;
     private boolean timerHasStarted = false;
@@ -35,6 +32,13 @@ public class TimerFragment extends Fragment {
 
     private long startTime = 0;
     private final long interval = 1000;
+
+    public static TimerFragment newInstance() {
+        TimerFragment fragment = new TimerFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

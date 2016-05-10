@@ -94,16 +94,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.DisplayProjectActivity" />
         </activity>
-        <![CDATA[
         >
-        ]]>
         <activity
             android:name=".activities.PairProgrammingActivity"
             android:label="@string/title_activity_pair_programming"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".model.TimeService"
             android:exported="false" />
+
+        <activity
+            android:name=".activities.WorkSessionActivity"
+            android:label="@string/title_activity_work_session"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

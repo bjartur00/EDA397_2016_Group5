@@ -20,4 +20,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_work_session">WorkSessionActivity</string>
+
+    <string-array name="session_tabs_names">
+        <item>Test Cases</item>
+        <item>Notes</item>
+        <item>Timer</item>
+    </string-array>
 </resources>
