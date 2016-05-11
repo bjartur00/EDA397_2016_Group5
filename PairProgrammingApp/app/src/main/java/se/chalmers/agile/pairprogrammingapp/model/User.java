@@ -4,37 +4,28 @@ package se.chalmers.agile.pairprogrammingapp.model;
  * Created by Þórhildur on 9.4.2016.
  */
 public class User {
-    String name;
-    String email;
-    String password;
+    String fullName;
+    String username;
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public User(String fullName, String username) {
+
+        this.fullName = fullName;
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

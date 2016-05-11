@@ -35,11 +35,11 @@ public class FindPersonFragment extends Fragment {
             public void onClick(View v) {
                 TextView displayPerson = (TextView) getView().findViewById(R.id.item_thePerson);
                 if(randomGenerator() <= 0.33) {
-                    displayPerson.setText(MainActivity.firstUser.getName());
+                    displayPerson.setText(MainActivity.firstUser.getFullName());
                 } else if(randomGenerator() > 0.33 && randomGenerator() <= 0.66){
-                    displayPerson.setText(MainActivity.secondUser.getName());
+                    displayPerson.setText(MainActivity.secondUser.getFullName());
                 } else {
-                    displayPerson.setText(MainActivity.thirdUser.getName());
+                    displayPerson.setText(MainActivity.thirdUser.getFullName());
                 }
             }
         });
