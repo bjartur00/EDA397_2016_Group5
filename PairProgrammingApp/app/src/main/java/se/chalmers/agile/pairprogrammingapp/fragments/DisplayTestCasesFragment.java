@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,13 @@ import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.modelview.TestCasesListAdapter;
 import se.chalmers.agile.pairprogrammingapp.network.RequestHandler;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
-import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
-public class TestCasesFragment extends Fragment implements TestCasesListAdapter.OnTestCaseItemClickedListener {
+public class DisplayTestCasesFragment extends Fragment implements TestCasesListAdapter.OnTestCaseItemClickedListener {
     private static final String ARG_UNIT_ID = "unitId";
 
     private String mUnitId;
 
-    private final static String TAG = "se.chalmers.agile.pairprogrammingapp.fragments.TestCasesFragment";
+    private final static String TAG = "se.chalmers.agile.pairprogrammingapp.fragments.DisplayTestCasesFragment";
 
     // Variable that holds all the test cases that are displayed
     public static ArrayList<TestCase> mTestCases;
@@ -37,18 +35,18 @@ public class TestCasesFragment extends Fragment implements TestCasesListAdapter.
     private TestCasesListAdapter mAdapter;
 
 
-    public TestCasesFragment() {
+    public DisplayTestCasesFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Returns a new instance of the TestCasesFragment
+     * Returns a new instance of the DisplayTestCasesFragment
      *
      * @param unitId The unit ID.
-     * @return A new instance of fragment TestCasesFragment.
+     * @return A new instance of fragment DisplayTestCasesFragment.
      */
-    public static TestCasesFragment newInstance(String unitId) {
-        TestCasesFragment fragment = new TestCasesFragment();
+    public static DisplayTestCasesFragment newInstance(String unitId) {
+        DisplayTestCasesFragment fragment = new DisplayTestCasesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_UNIT_ID, unitId);
         fragment.setArguments(args);

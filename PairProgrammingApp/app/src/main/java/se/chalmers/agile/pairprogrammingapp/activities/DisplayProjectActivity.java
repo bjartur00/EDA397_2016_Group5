@@ -15,20 +15,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 
 import com.android.volley.Request;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
 import se.chalmers.agile.pairprogrammingapp.model.GetProjectsResponse;
-import se.chalmers.agile.pairprogrammingapp.model.Unit;
-import se.chalmers.agile.pairprogrammingapp.modelview.DisplayProjectAdapter;
+import se.chalmers.agile.pairprogrammingapp.modelview.ProjectListAdapter;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.network.JsonSerializer;
@@ -40,20 +37,12 @@ import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 /**
  * This activity displays the list of projects assigned to the user.
  */
-public class DisplayProjectActivity extends AppCompatActivity implements DisplayProjectAdapter.OnProjectItemClickedListener {
+public class DisplayProjectActivity extends AppCompatActivity implements ProjectListAdapter.OnProjectItemClickedListener {
     private final static String TAG = "se.chalmers.agile.pairprogrammingapp.activities.DisplayProjectActivity";
 
-    public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
-
     private ArrayList<Project> mProjects;
-    private RecyclerView mRecyclerView;
 
-    private DisplayProjectAdapter mAdapter;
-
-    //contains the layout of the views inside of the Recycler view.
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    public static ArrayList<Unit> mUnits = new ArrayList<Unit>();
+    private ProjectListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,25 +51,13 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //TODO: This part may be modified to add new projects...
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         //assist the variable to find its targeting layout in the layout folder.
-        mRecyclerView = (RecyclerView) findViewById(R.id.project_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.project_list);
+        recyclerView.setHasFixedSize(true);
 
-        //use this seeting to improve performance if you know that
-        //changes in content do not change the layout size of the Recycler view
-        mRecyclerView.setHasFixedSize(true);
         //use a lienar layout manager, the views inside the recycler view should be vertically linear
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         // Get the data
         RequestHandler.loadJsonDataGet(TrelloUrls.getProjectsUrl("me", ((PairProgrammingApplication) DisplayProjectActivity.this.getApplication()).getToken()),
@@ -96,23 +73,8 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
                         editor.commit();
 
                         mProjects = response.getProjects();
-                        mAdapter = new DisplayProjectAdapter(mProjects, DisplayProjectActivity.this);
-                        mRecyclerView.setAdapter(mAdapter);
-
-                        /*((DisplayProjectAdapter) mAdapter).setOnItemClickListener(new DisplayProjectAdapter.MyClickListener() {
-                            @Override
-                            public void onItemClick(int position, View v) {
-                                Intent intent = new Intent(DisplayProjectActivity.this, DisplayUnitsActivity.class);
-                                TextView textview = (TextView) ((ViewGroup) v).getChildAt(0);
-
-                                message = textview.getText().toString();
-
-                                intent.putExtra("mUnits", mUnits);
-                                intent.putExtra(EXTRA_MESSAGE, message);
-                                startActivity(intent);
-
-                            }
-                        });*/
+                        mAdapter = new ProjectListAdapter(mProjects, DisplayProjectActivity.this);
+                        recyclerView.setAdapter(mAdapter);
                     }
 
                     @Override
@@ -121,20 +83,6 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
                     }
                 }, Request.Priority.HIGH, TAG);
     }
-
-    /**
-     * Creates the data to be filled in the activity.
-     *
-     * @return the project data to be displayed.
-     */
-    /*private ArrayList<Project> getDataSet() {
-        ArrayList results = new ArrayList<Project>();
-        for (int index = 0; index < 4; index++) {
-            Project data = new Project("Project " + Integer.toString(index), index);
-            results.add(index, data);
-        }
-        return results;
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

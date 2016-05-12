@@ -7,46 +7,32 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TrelloApi;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+
 import java.util.concurrent.ExecutionException;
+
 import se.chalmers.agile.pairprogrammingapp.R;
-import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.model.TimeService;
-import se.chalmers.agile.pairprogrammingapp.model.User;
-import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 import se.chalmers.agile.pairprogrammingapp.utils.Constants;
-import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 import se.chalmers.agile.pairprogrammingapp.utils.SecretKeys;
-import se.chalmers.agile.pairprogrammingapp.utils.StaticTestIds;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static User firstUser = new User("John Kennet", "john");
-    public static User secondUser = new User("Sarah Smith", "sarah");
-    public static User thirdUser = new User("Tim Burton", "tim");
-
-    public final static String EXTRA_MESSAGE = "com.example.wanziguelva.myapplication.MESSAGE";
-
     // Important global variables for the timer since the main activity will always run in the background.
     public static boolean timeIsRunning = false;
     public static long remainingTimeMs = 0;
     public static Intent timeServiceIntent;
     public static boolean dontDisplayTextWhenFinished = false;
 
+    // vars for oauth service
     private OAuthService service;
     private static Token requestToken;
-
-    // For the test cases
-    public User[] oMembers;
-
-    public Project[] mProjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +51,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
     }
 
-    public void openNotes(View view) {
-        Intent intent = new Intent(MainActivity.this, ViewNotesActivity.class);
-        intent.putExtra(ExtraKeys.APPLICATION_ID, StaticTestIds.APP_ID_3);
-        startActivity(intent);
-    }
-
+    /**
+     * Initiates the authentication with Trello process
+     * @param view
+     */
     public void loginViaTrello(View view) {
         String authUrl = null;
         try {

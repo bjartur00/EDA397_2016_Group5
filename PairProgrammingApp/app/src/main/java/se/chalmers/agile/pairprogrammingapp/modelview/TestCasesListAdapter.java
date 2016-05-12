@@ -55,14 +55,6 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
         }
     }
 
-    public void notifyItemAdded() {
-        notifyItemInserted(testCases.size() - 1);
-    }
-
-    public void notifyItemModified(int position) {
-        notifyItemChanged(position);
-    }
-
     public class TestCaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private OnTestCaseItemClickedListener listener;
         private int position;

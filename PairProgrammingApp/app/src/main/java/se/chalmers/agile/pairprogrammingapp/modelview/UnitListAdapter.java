@@ -18,11 +18,11 @@ import se.chalmers.agile.pairprogrammingapp.model.Unit;
 /**
  * This class serves as an adapter to format the Unit object into recyclerview for the DisplayUnitActivity.
  */
-public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.ViewHolder> {
+public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.ViewHolder> {
     private ArrayList<Unit> mDataSet;
     private static OnUnitItemClickedListener mListener;
 
-    public DisplayUnitAdapter(ArrayList<Unit> data, OnUnitItemClickedListener listener) {
+    public UnitListAdapter(ArrayList<Unit> data, OnUnitItemClickedListener listener) {
         mDataSet = data;
         mListener = listener;
     }
@@ -32,7 +32,6 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
      */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         //create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_unit, parent, false);
 
@@ -67,26 +66,6 @@ public class DisplayUnitAdapter extends RecyclerView.Adapter<DisplayUnitAdapter.
         public void onClick(View v) {
             mListener.onUnitItemClick(getAdapterPosition());
         }
-    }
-
-
-
-
-    /**
-     * Used when adding a new item.
-     */
-    // TODO: will be implemented later on
-    public void addItem(Unit Unit, int index) {
-        mDataSet.add(index, Unit);
-        notifyItemInserted(index);
-    }
-
-    /**
-     * Used when deleting an item
-     */
-    public void deleteItem(int index) {
-        mDataSet.remove(index);
-        notifyItemRemoved(index);
     }
 
     /**

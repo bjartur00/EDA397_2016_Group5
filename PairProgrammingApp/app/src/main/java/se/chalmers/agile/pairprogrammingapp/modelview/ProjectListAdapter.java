@@ -18,11 +18,11 @@ import se.chalmers.agile.pairprogrammingapp.model.Project;
 /**
  * This class serves as an adapter to format the project object into recyclerview for the DisplayProjectActivity.
  */
-public class DisplayProjectAdapter extends RecyclerView.Adapter<DisplayProjectAdapter.ViewHolder> {
+public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ViewHolder> {
     private ArrayList<Project> mDataSet;
     private OnProjectItemClickedListener mListener;
 
-    public DisplayProjectAdapter (ArrayList<Project> data, OnProjectItemClickedListener listener){
+    public ProjectListAdapter(ArrayList<Project> data, OnProjectItemClickedListener listener){
         mDataSet = data;
         mListener = listener;
     }
@@ -32,7 +32,6 @@ public class DisplayProjectAdapter extends RecyclerView.Adapter<DisplayProjectAd
      */
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
-
         //create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project, parent, false);
 
@@ -72,23 +71,6 @@ public class DisplayProjectAdapter extends RecyclerView.Adapter<DisplayProjectAd
                 mListener.onProjectItemClicked(getAdapterPosition());
             }
         }
-    }
-
-    /**
-     * Used when adding a new item.
-     */
-    // TODO: will be implemented later on
-    public void addItem(Project project, int index) {
-        mDataSet.add(index, project);
-        notifyItemInserted(index);
-    }
-
-    /**
-     * Used when deleting an item
-     */
-    public void deleteItem(int index) {
-        mDataSet.remove(index);
-        notifyItemRemoved(index);
     }
 
     /**

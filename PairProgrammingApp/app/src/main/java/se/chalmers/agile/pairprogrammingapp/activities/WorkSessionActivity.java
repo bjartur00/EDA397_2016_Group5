@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,22 +23,17 @@ import java.util.HashMap;
 import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.fragments.DisplayNotesFragment;
-import se.chalmers.agile.pairprogrammingapp.fragments.TestCasesFragment;
+import se.chalmers.agile.pairprogrammingapp.fragments.DisplayTestCasesFragment;
 import se.chalmers.agile.pairprogrammingapp.fragments.TimerFragment;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
 public class WorkSessionActivity extends AppCompatActivity {
 
-    private TabsAdapter mTabsAdapter;
-
     private static final int TEST_CASES = 0;
     private static final int NOTES = 1;
     private static final int TIMER = 2;
 
-    private String mProjectId;
-    private String mUnitId;
-
-    private TestCasesFragment mTestCasesFragment;
+    private DisplayTestCasesFragment mDisplayTestCasesFragment;
     private DisplayNotesFragment mDisplayNotesFragment;
 
     @Override
@@ -54,27 +47,26 @@ public class WorkSessionActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mUnitId = extras.getString(ExtraKeys.UNIT_ID);
-            mProjectId = extras.getString(ExtraKeys.PROJECT_ID);
+            String unitId = extras.getString(ExtraKeys.UNIT_ID);
+            String projectId = extras.getString(ExtraKeys.PROJECT_ID);
 
             getSupportActionBar().setTitle(extras.getString(ExtraKeys.UNIT_NAME));
 
             String[] tabNames = getResources().getStringArray(R.array.session_tabs_names);
 
-            // Set up view pager
             // Set up ViewPager and adapter
             final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-            mTabsAdapter = new TabsAdapter(getSupportFragmentManager());
-            viewPager.setAdapter(mTabsAdapter);
+            TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(tabsAdapter);
 
 
-            mTestCasesFragment = TestCasesFragment.newInstance(mUnitId);
-            mTabsAdapter.addTab(tabNames[TEST_CASES], mTestCasesFragment, TEST_CASES);
+            mDisplayTestCasesFragment = DisplayTestCasesFragment.newInstance(unitId);
+            tabsAdapter.addTab(tabNames[TEST_CASES], mDisplayTestCasesFragment, TEST_CASES);
 
-            mDisplayNotesFragment = DisplayNotesFragment.newInstance(mProjectId);
-            mTabsAdapter.addTab(tabNames[NOTES], mDisplayNotesFragment, NOTES);
+            mDisplayNotesFragment = DisplayNotesFragment.newInstance(projectId);
+            tabsAdapter.addTab(tabNames[NOTES], mDisplayNotesFragment, NOTES);
 
-            mTabsAdapter.addTab(tabNames[TIMER], TimerFragment.newInstance(mProjectId), TIMER);
+            tabsAdapter.addTab(tabNames[TIMER], TimerFragment.newInstance(projectId), TIMER);
 
             TabLayout tabLayout =
                     (TabLayout) findViewById(R.id.tab_layout);
@@ -86,26 +78,6 @@ public class WorkSessionActivity extends AppCompatActivity {
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             // Listener for hiding and showing the fab
             final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    /*if (position == TIMER) {
-                        fab.hide();
-                    } else {
-                        fab.show();
-                    }*/
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -212,13 +184,6 @@ public class WorkSessionActivity extends AppCompatActivity {
             mFragments.put(tabId, newFragment);
             mTabNums.add(tabId);
             notifyDataSetChanged();
-        }
-
-        public Fragment getTabFragment(int tabNum) {
-            if (mFragments.containsKey(tabNum)) {
-                return mFragments.get(tabNum);
-            }
-            return null;
         }
 
         @Override

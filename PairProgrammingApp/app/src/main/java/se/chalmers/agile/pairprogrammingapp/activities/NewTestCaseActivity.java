@@ -33,12 +33,13 @@ public class NewTestCaseActivity extends AppCompatActivity {
 
     public void openTestCases(View view)
     {
-        mTestCases.add(
+        // TODO return result to calling activity
+        /*mTestCases.add(
                 new TestCase(
                         ((EditText) this.findViewById(R.id.item_TestCaseTitle)).getText().toString(),
                         ((EditText) this.findViewById(R.id.item_TestCaseDescription)).getText().toString(), 3, 0, ""));
         Intent intent = new Intent(NewTestCaseActivity.this, TestCasesActivity.class);
         intent.putExtra("mTestCases", mTestCases);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }

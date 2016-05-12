@@ -12,12 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -27,9 +23,8 @@ import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
 import se.chalmers.agile.pairprogrammingapp.R;
-import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
-import se.chalmers.agile.pairprogrammingapp.modelview.DisplayUnitAdapter;
+import se.chalmers.agile.pairprogrammingapp.modelview.UnitListAdapter;
 import se.chalmers.agile.pairprogrammingapp.network.JsonSerializer;
 import se.chalmers.agile.pairprogrammingapp.network.RequestHandler;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
@@ -38,18 +33,11 @@ import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 /**
  * This activity displays the list of units selected by the user.
  */
-public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUnitAdapter.OnUnitItemClickedListener {
+public class DisplayUnitsActivity extends AppCompatActivity implements UnitListAdapter.OnUnitItemClickedListener {
     private final static String TAG = "se.chalmers.agile.pairprogrammingapp.activities.DisplayUnitsActivity";
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-
-    //contains the layout of the views inside of the Recycler view.
-    private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<Unit> mUnits;
     private String mProjectId;
-    private String mProjectName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +48,22 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.unit_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.unit_list);
 
         //use this seeting to improve performance if you know that
         //changes in content do not change the layout size of the Recycler view
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
         //use a lienar layout manager, the views inside the recycler view should be vertically linear
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mProjectId = extras.getString(ExtraKeys.PROJECT_ID);
-            mProjectName = extras.getString(ExtraKeys.PROJECT_NAME);
+            String projectName = extras.getString(ExtraKeys.PROJECT_NAME);
 
-            getSupportActionBar().setTitle(mProjectName);
+            getSupportActionBar().setTitle(projectName);
 
             RequestHandler.loadJsonArrayGet(TrelloUrls.getUnitsUrl(mProjectId, ((PairProgrammingApplication) DisplayUnitsActivity.this.getApplication()).getToken()),
                     new RequestHandler.OnJsonArrayLoadedListener() {
@@ -83,8 +71,7 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
                         public void onJsonDataLoadedSuccessfully(JSONArray data) {
                             mUnits = JsonSerializer.json2Units(data);
 
-                            mAdapter = new DisplayUnitAdapter(mUnits, DisplayUnitsActivity.this);
-                            mRecyclerView.setAdapter(mAdapter);
+                            recyclerView.setAdapter(new UnitListAdapter(mUnits, DisplayUnitsActivity.this));
                         }
 
                         @Override

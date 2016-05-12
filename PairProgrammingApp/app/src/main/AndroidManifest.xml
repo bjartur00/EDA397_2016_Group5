@@ -32,15 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.TestCasesActivity"
-            android:label="@string/title_activity_test_cases"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
-        </activity>
-        <activity
             android:name=".activities.DisplayProjectActivity"
             android:label="@string/title_activity_display_project"
             android:parentActivityName=".activities.MainActivity"
@@ -49,42 +40,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-        <activity
-            android:name=".activities.ViewNotesActivity"
-            android:label="@string/title_activity_view_notes"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
-        </activity>
-        <activity
-            android:name=".activities.EditNoteActivity"
-            android:label="@string/title_activity_edit_note"
-            android:parentActivityName=".activities.ViewNotesActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="se.chalmers.agile.pairprogrammingapp.activities.ViewNotesActivity" />
-        </activity>
-        <!--
-             ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name=".activities.NewTestCaseActivity"
-            android:label="@string/title_activity_new_test_case"
-            android:parentActivityName=".activities.TestCasesActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.TestCasesActivity" />
-        </activity>
-        <activity android:name=".WelcomeActivity" />
         <activity
             android:name=".activities.DisplayUnitsActivity"
             android:parentActivityName=".activities.DisplayProjectActivity"
@@ -92,7 +50,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.DisplayProjectActivity" />
-        </activity><![CDATA[
+        </activity>
+        <![CDATA[
         >
 
         ]]>
