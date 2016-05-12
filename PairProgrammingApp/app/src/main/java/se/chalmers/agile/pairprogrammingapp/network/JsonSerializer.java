@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
+import se.chalmers.agile.pairprogrammingapp.model.User;
 
 /**
  * Created by wissam on 26/04/16.
@@ -35,6 +36,21 @@ public class JsonSerializer {
                 String unitName = unitObject.getString("name");
                 String unitId = unitObject.getString("id");
                 result.add(new Unit(unitName, unitId));
+            }
+        } catch (Exception e) {
+
+        }
+        return result;
+    }
+
+    public static ArrayList<User> json2Members(JSONArray membersArray) {
+        ArrayList<User> result = new ArrayList<>();
+        try {
+            for (int i = 0; i < membersArray.length(); i++) {
+                JSONObject membersObject = membersArray.getJSONObject(i);
+                String membersFullName = membersObject.getString("fullName");
+                String membersUserName = membersObject.getString("username");
+                result.add(new User(membersFullName, membersUserName));
             }
         } catch (Exception e) {
 
