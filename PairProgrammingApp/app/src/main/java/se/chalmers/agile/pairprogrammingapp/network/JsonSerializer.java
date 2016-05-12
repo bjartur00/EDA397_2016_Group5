@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import se.chalmers.agile.pairprogrammingapp.model.GetNotesResponse;
+import se.chalmers.agile.pairprogrammingapp.model.GetProjectsResponse;
 import se.chalmers.agile.pairprogrammingapp.model.Note;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
@@ -23,9 +24,15 @@ public class JsonSerializer {
     public static DateFormat sDateFormat = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-    public static ArrayList<Project> json2Projects(JSONArray projectsArray) {
+    public static GetProjectsResponse json2Projects(JSONObject object) {
         ArrayList<Project> result = new ArrayList<>();
+        String id = "";
+        String username = "";
         try {
+            id = object.getString("id");
+            username = object.getString("username");
+            JSONArray projectsArray = object.getJSONArray("boards");
+
             for (int index = 0; index < projectsArray.length(); index++) {
                 JSONObject projectObject = projectsArray.getJSONObject(index);
                 String projectName = projectObject.getString("name");
@@ -35,7 +42,7 @@ public class JsonSerializer {
         } catch (Exception ignored) {
 
         }
-        return result;
+        return new GetProjectsResponse(result, id, username);
     }
 
     public static ArrayList<Unit> json2Units(JSONArray unitsArray) {

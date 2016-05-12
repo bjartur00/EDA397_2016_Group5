@@ -87,19 +87,15 @@
         <activity android:name=".WelcomeActivity" />
         <activity
             android:name=".activities.DisplayUnitsActivity"
-            android:label="@string/title_activity_display_units"
             android:parentActivityName=".activities.DisplayProjectActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.DisplayProjectActivity" />
-        </activity>
+        </activity><![CDATA[
         >
-        <activity
-            android:name=".activities.PairProgrammingActivity"
-            android:label="@string/title_activity_pair_programming"
-            android:theme="@style/AppTheme.NoActionBar" />
 
+        ]]>
         <service
             android:name=".model.TimeService"
             android:exported="false" />

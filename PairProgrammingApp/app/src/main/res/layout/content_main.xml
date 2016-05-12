@@ -22,31 +22,4 @@
         android:onClick="loginViaTrello"
         android:text="Login via Trello" />
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_notes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:layout_weight="1"
-            android:onClick="openNotes"
-            android:text="Notes" />
-
-        <Button
-            android:id="@+id/item_timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:onClick="openTimer"
-            android:text="Timer" />
-    </LinearLayout>
-
 </LinearLayout>

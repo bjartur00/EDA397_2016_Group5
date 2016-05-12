@@ -7,88 +7,102 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_HH"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="HH"
+                android:textSize="40dp" />
+
+            <TextView
+                android:id="@+id/item_MM"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="MM"
+                android:textSize="40dp" />
+
+            <TextView
+                android:id="@+id/item_SS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="SS"
+                android:textSize="40dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startPauseClick"
+            android:orientation="horizontal"
+            android:touchscreenBlocksFocus="true">
+
+            <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
+                android:id="@+id/item_hours"
+                max="23"
+                min="0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:textAlignment="center" />
+
+            <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
+                android:id="@+id/item_minutes"
+                max="60"
+                min="0"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
+                android:id="@+id/item_seconds"
+                max="60"
+                min="0"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/item_startTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="gravity"
+            android:text="Find person"
+            android:gravity="center"
+            android:id="@+id/item_findPerson" />
 
         <TextView
-            android:id="@+id/item_HH"
-            android:text="HH"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="40dp"/>
-
-        <TextView
-            android:id="@+id/item_MM"
-            android:text="MM"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="40dp"/>
-
-        <TextView
-            android:id="@+id/item_SS"
-            android:text="SS"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="40dp"/>
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:touchscreenBlocksFocus="true"
-        android:onClick="startPauseClick">
-        <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:id="@+id/item_hours"
-            android:textAlignment="center"
-            max="23"
-            min="0" />
-
-        <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:id="@+id/item_minutes"
-            max="60"
-            min="0"
-            />
-
-        <se.chalmers.agile.pairprogrammingapp.model.MyNumberPicker
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:id="@+id/item_seconds"
-            max="60"
-            min="0"
-            />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/item_startTime"
-        android:text="Start"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/item_thePerson"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

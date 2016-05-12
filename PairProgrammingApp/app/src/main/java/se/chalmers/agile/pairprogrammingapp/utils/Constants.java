@@ -9,6 +9,8 @@ public class Constants {
     public static final String PREFS_NAME = "se.chalmers.agile.pairprogrammingapp.prefs";
     public static final String PREF_ACCESS_TOKEN = "se.chalmers.agile.pairprogrammingapp.prefs.accesstoken";
     public static final String PREF_ACCESS_SECRET = "se.chalmers.agile.pairprogrammingapp.prefs.accesssecret";
+    public static final String PREF_ID = "se.chalmers.agile.pairprogrammingapp.prefs.id";
+    public static final String PREF_USERNAME = "se.chalmers.agile.pairprogrammingapp.prefs.username";
 
     public static final String NOTES_LIST_NAME = "_NOTES_";
     public static final String TIMER_LIST_NAME = "_TIMER_";

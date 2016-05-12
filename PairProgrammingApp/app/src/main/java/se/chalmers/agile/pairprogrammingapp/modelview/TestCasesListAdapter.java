@@ -10,8 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.R;
-import se.chalmers.agile.pairprogrammingapp.activities.TestCasesActivity;
-import se.chalmers.agile.pairprogrammingapp.fragments.TestCasesFragment;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 
 
@@ -34,7 +32,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
     @Override
     public TestCasesListAdapter.TestCaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.testcase, parent, false);
+                .inflate(R.layout.item_testcase, parent, false);
 
         TestCaseViewHolder testCaseViewHolder = new TestCaseViewHolder(view, mListener);
         return testCaseViewHolder;
@@ -79,7 +77,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
             tvTitle = (TextView) itemView.findViewById(R.id.item_TestCaseTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.item_TestCaseDescription);
 
-            itemView.findViewById(R.id.testCase).setOnClickListener(this);
+            //itemView.findViewById(R.id.testCase).setOnClickListener(this);
         }
 
         public void setData(int position, TestCase testCase) {

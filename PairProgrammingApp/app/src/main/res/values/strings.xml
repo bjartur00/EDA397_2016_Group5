@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PairProgrammingApp</string>
+    <string name="app_name">Pair Programming</string>
     <string name="project_page_heading">Your Projects:</string>
     <string name="show_project1">Project 1</string>
     <string name="show_project2">Project 2</string>
@@ -13,10 +13,10 @@
     <string name="title_activity_edit_note">Edit Note</string>
     <string name="title_activity_test_cases">Test cases</string>
     <string name="title_activity_new_test_case">NewTestCaseActivity</string>
-    <string name="title_activity_display_project">DisplayProjectActivity</string>
+    <string name="title_activity_display_project">Projects</string>
     <string name="title_activity_display_units">DisplayUnitsActivity</string>
     <string name="title_activity_Timer">timer</string>
-    <string name="title_activity_pair_programming">Pair programming</string>
+    <string name="title_activity_pair_programming">Pair Programming</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

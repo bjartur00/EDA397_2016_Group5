@@ -45,7 +45,7 @@ public class TrelloUrls {
     }
 
     public static String getProjectsUrl(String username, String userToken) {
-        return "https://api.trello.com/1/members/" + username + "/boards?filter=open&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+        return "https://api.trello.com/1/members/" + username + "?boards=open&board_fields=name,id&key=" + SecretKeys.API_KEY + "&token=" + userToken;
     }
 
     static class trelloRequestTestCases implements RequestHandler.OnJsonArrayLoadedListener {

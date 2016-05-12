@@ -6,6 +6,7 @@ package se.chalmers.agile.pairprogrammingapp.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +21,12 @@ import android.widget.TextView;
 import com.android.volley.Request;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
+import se.chalmers.agile.pairprogrammingapp.model.GetProjectsResponse;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.modelview.DisplayProjectAdapter;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
@@ -31,6 +34,7 @@ import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.network.JsonSerializer;
 import se.chalmers.agile.pairprogrammingapp.network.RequestHandler;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
+import se.chalmers.agile.pairprogrammingapp.utils.Constants;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
 
 /**
@@ -68,10 +72,6 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
 //            }
 //        });
 
-        Intent intent = getIntent();
-
-        ((TextView) findViewById(R.id.project_title)).setText(intent.getStringExtra(ExtraKeys.USERNAME));
-
         //assist the variable to find its targeting layout in the layout folder.
         mRecyclerView = (RecyclerView) findViewById(R.id.project_list);
 
@@ -83,11 +83,19 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Get the data
-        RequestHandler.loadJsonArrayGet(TrelloUrls.getProjectsUrl("me", ((PairProgrammingApplication) DisplayProjectActivity.this.getApplication()).getToken()),
-                new RequestHandler.OnJsonArrayLoadedListener() {
+        RequestHandler.loadJsonDataGet(TrelloUrls.getProjectsUrl("me", ((PairProgrammingApplication) DisplayProjectActivity.this.getApplication()).getToken()),
+                new RequestHandler.OnJsonDataLoadedListener() {
                     @Override
-                    public void onJsonDataLoadedSuccessfully(JSONArray data) {
-                        mProjects = JsonSerializer.json2Projects(data);
+                    public void onJsonDataLoadedSuccessfully(JSONObject data) {
+                        GetProjectsResponse response = JsonSerializer.json2Projects(data);
+
+                        // Store user's username and id
+                        final SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS_NAME, 0).edit();
+                        editor.putString(Constants.PREF_ID, response.getId());
+                        editor.putString(Constants.PREF_USERNAME, response.getUsername());
+                        editor.commit();
+
+                        mProjects = response.getProjects();
                         mAdapter = new DisplayProjectAdapter(mProjects, DisplayProjectActivity.this);
                         mRecyclerView.setAdapter(mAdapter);
 
@@ -180,6 +188,7 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
     public void onProjectItemClicked(int position) {
         Intent intent = new Intent(this, DisplayUnitsActivity.class);
         intent.putExtra(ExtraKeys.PROJECT_ID, mProjects.get(position).getProjectId());
+        intent.putExtra(ExtraKeys.PROJECT_NAME, mProjects.get(position).getProjectName());
         startActivity(intent);
     }
 }

@@ -13,7 +13,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import se.chalmers.agile.pairprogrammingapp.activities.MainActivity;
-import se.chalmers.agile.pairprogrammingapp.activities.PairProgrammingActivity;
 
 /**
  * Created by Omar on 29.4.2016.

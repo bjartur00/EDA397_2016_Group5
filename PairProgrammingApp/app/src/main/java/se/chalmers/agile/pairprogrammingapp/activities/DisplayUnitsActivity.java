@@ -4,13 +4,16 @@ package se.chalmers.agile.pairprogrammingapp.activities;
  * Created by wanziguelva on 16-04-24.
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,7 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
 
     private ArrayList<Unit> mUnits;
     private String mProjectId;
+    private String mProjectName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,9 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mProjectId = extras.getString(ExtraKeys.PROJECT_ID);
+            mProjectName = extras.getString(ExtraKeys.PROJECT_NAME);
+
+            getSupportActionBar().setTitle(mProjectName);
 
             RequestHandler.loadJsonArrayGet(TrelloUrls.getUnitsUrl(mProjectId, ((PairProgrammingApplication) DisplayUnitsActivity.this.getApplication()).getToken()),
                     new RequestHandler.OnJsonArrayLoadedListener() {
@@ -88,10 +95,51 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_display_projects, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         if (id == android.R.id.home) {
             finish();
+            return true;
+        }
+        if (id == R.id.action_logout) {
+            //((PairProgrammingApplication) getApplication()).showLogoutDialog(DisplayProjectActivity.this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            // set title
+            alertDialogBuilder.setTitle("Log out");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to log out?")
+                    .setCancelable(false)
+                    .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            ((PairProgrammingApplication) getApplication()).logOut(DisplayUnitsActivity.this);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Close dialog
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
             return true;
         }
 
@@ -102,6 +150,7 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
     public void onUnitItemClick(int position) {
         Intent intent = new Intent(this, WorkSessionActivity.class);
         intent.putExtra(ExtraKeys.UNIT_ID, mUnits.get(position).getID());
+        intent.putExtra(ExtraKeys.UNIT_NAME, mUnits.get(position).getUnitName());
         intent.putExtra(ExtraKeys.PROJECT_ID, mProjectId);
         startActivity(intent);
     }

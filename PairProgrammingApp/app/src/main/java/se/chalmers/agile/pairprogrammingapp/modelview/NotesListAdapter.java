@@ -77,7 +77,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);
             tvContent = (TextView) itemView.findViewById(R.id.tvContent);
 
-            itemView.findViewById(R.id.item).setOnClickListener(this);
+            //itemView.findViewById(R.id.item).setOnClickListener(this);
             itemView.findViewById(R.id.btnDelete).setOnClickListener(this);
         }
 
