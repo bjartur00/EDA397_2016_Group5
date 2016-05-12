@@ -7,6 +7,8 @@ import com.android.volley.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import se.chalmers.agile.pairprogrammingapp.model.Project;
@@ -31,8 +33,28 @@ public class TrelloUrls {
         return "https://api.trello.com/1/boards/" + boardId + "/lists?cards=open&card_fields=name,due&fields=name&key=" + SecretKeys.API_KEY + "&token=" + userToken;
     }
 
-    public static String addNoteUrl(String notesListId) {
-        return "https://api.trello.com/1/lists/" + notesListId + "/cards";
+    public static String addNoteUrl(String notesListId, String content, String due, String userToken) {
+        String encodedContent = null;
+        try {
+            encodedContent = URLEncoder.encode(content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            encodedContent = "";
+        }
+        return "https://api.trello.com/1/lists/" + notesListId + "/cards?name=" + encodedContent + "&due=" + due + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+    }
+
+    public static String editNoteUrl(String cardsId, String content, String userToken) {
+        String encodedContent = null;
+        try {
+            encodedContent = URLEncoder.encode(content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            encodedContent = "";
+        }
+        return "https://api.trello.com/1/cards/" + cardsId + "/name?value=" + encodedContent + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+    }
+
+    public static String editNoteModDateUrl(String cardsId, String due, String userToken) {
+        return "https://api.trello.com/1/cards/" + cardsId + "/due?value=" + due + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
     }
 
     public static String getMembersUrl(String boardId, String userToken) {

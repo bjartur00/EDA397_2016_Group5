@@ -1,5 +1,7 @@
 package se.chalmers.agile.pairprogrammingapp.network;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,7 +24,7 @@ import se.chalmers.agile.pairprogrammingapp.model.User;
  */
 public class JsonSerializer {
     public static DateFormat sDateFormat = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public static GetProjectsResponse json2Projects(JSONObject object) {
         ArrayList<Project> result = new ArrayList<>();
@@ -81,7 +83,8 @@ public class JsonSerializer {
                         try {
                             noteCreated = sDateFormat.parse(noteObject
                                     .getString("due"));
-                        } catch (Exception ignored) {
+                        } catch (Exception e) {
+                            Log.d("wissam", e.toString());
                         }
                         notes.add(new Note(noteId, noteContent, noteCreated));
                     }

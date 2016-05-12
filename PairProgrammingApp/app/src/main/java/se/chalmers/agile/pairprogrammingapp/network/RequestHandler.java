@@ -1,5 +1,7 @@
 package se.chalmers.agile.pairprogrammingapp.network;
 
+import android.util.Base64;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -19,7 +21,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
 import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.model.User;
+import se.chalmers.agile.pairprogrammingapp.utils.SecretKeys;
 
 /**
  * Created by wissam on 25/04/16.

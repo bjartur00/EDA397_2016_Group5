@@ -2,12 +2,13 @@ package se.chalmers.agile.pairprogrammingapp.fragments;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,12 +109,42 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
 
     @Override
     public void onNoteItemClicked(int position) {
+        Intent intent = new Intent(getActivity(), EditNoteActivity.class);
+        intent.putExtra(ExtraKeys.NOTE_POSITION, position);
+        intent.putExtra(ExtraKeys.NOTE_CONTENT, mNotes.get(position).getContent());
 
+        startActivityForResult(intent, EDIT_REQUEST_CODE);
     }
 
     @Override
-    public void onDeleteNoteClicked(int position) {
+    public void onDeleteNoteClicked(final int position) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
+        // set title
+        alertDialogBuilder.setTitle("Delete note");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete the note?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Delete the note
+                        mAdapter.deleteItem(position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Close the dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     public void addNewNote() {
@@ -134,8 +165,7 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                 if (position == NEW_NOTE_POSITION) {
                     addNote2Trello(content);
                 } else {
-                    mNotes.get(position).setContent(content);
-                    mAdapter.notifyItemModified(position);
+                    editNoteOnTrello(position, content);
                 }
             }
         }
@@ -143,11 +173,12 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
 
     private void addNote2Trello(final String content) {
         Map<String, String> params = new HashMap<>();
-        params.put("key", SecretKeys.API_KEY);
-        params.put("token", ((PairProgrammingApplication)getActivity().getApplication()).getToken());
-        params.put("name", content);
-        params.put("due", JsonSerializer.sDateFormat.format(new Date()));
-        RequestHandler.loadJsonDataPost(TrelloUrls.addNoteUrl(mNotesListId),
+        RequestHandler.loadJsonDataPost(
+                TrelloUrls.addNoteUrl(
+                        mNotesListId,
+                        content,
+                        JsonSerializer.sDateFormat.format(new Date()),
+                        ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
                 new RequestHandler.OnJsonDataLoadedListener() {
                     @Override
                     public void onJsonDataLoadedSuccessfully(JSONObject data) {
@@ -158,6 +189,51 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                     @Override
                     public void onJsonDataLoadingFailure(int errorId) {
                     }
-                }, params, Request.Priority.HIGH, TAG);
+                },
+                params,
+                Request.Priority.HIGH,
+                TAG);
+    }
+
+    private void editNoteOnTrello(final int position, final String content) {
+        Map<String, String> params = new HashMap<>();
+        RequestHandler.loadJsonDataPut(
+                TrelloUrls.editNoteUrl(
+                        mNotes.get(position).getId(),
+                        content,
+                        ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
+                new RequestHandler.OnJsonDataLoadedListener() {
+                    @Override
+                    public void onJsonDataLoadedSuccessfully(JSONObject data) {
+                        mNotes.get(position).setContent(content);
+                        mAdapter.notifyItemModified(position);
+
+                        // Change modification date on the note
+                        RequestHandler.loadJsonDataPut(TrelloUrls.editNoteModDateUrl(
+                                        mNotes.get(position).getId(),
+                                        JsonSerializer.sDateFormat.format(new Date()),
+                                        ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
+                                new RequestHandler.OnJsonDataLoadedListener() {
+                                    @Override
+                                    public void onJsonDataLoadedSuccessfully(JSONObject data) {
+
+                                    }
+
+                                    @Override
+                                    public void onJsonDataLoadingFailure(int errorId) {
+                                    }
+                                },
+                                null,
+                                Request.Priority.HIGH,
+                                TAG);
+                    }
+
+                    @Override
+                    public void onJsonDataLoadingFailure(int errorId) {
+                    }
+                },
+                params,
+                Request.Priority.HIGH,
+                TAG);
     }
 }

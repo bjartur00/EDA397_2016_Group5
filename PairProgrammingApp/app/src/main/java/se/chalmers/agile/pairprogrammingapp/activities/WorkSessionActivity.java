@@ -96,6 +96,26 @@ public class WorkSessionActivity extends AppCompatActivity {
 
             });
 
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == NOTES) {
+                        fab.show();
+                    } else {
+                        fab.hide();
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

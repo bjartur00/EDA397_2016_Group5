@@ -9,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.TrelloApi;
-import org.scribe.model.Token;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
+import com.github.scribejava.apis.TrelloApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuth1RequestToken;
+import com.github.scribejava.core.model.Token;
+import com.github.scribejava.core.oauth.OAuth10aService;
+import com.github.scribejava.core.oauth.OAuthService;
 
 import java.util.concurrent.ExecutionException;
 
@@ -31,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public static boolean dontDisplayTextWhenFinished = false;
 
     // vars for oauth service
-    private OAuthService service;
-    private static Token requestToken;
+    private OAuth10aService service;
+    private static OAuth1RequestToken requestToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Create the service to authenticate with Trello API
         service = new ServiceBuilder()
-                .provider(TrelloApi.class)
                 .apiKey(SecretKeys.API_KEY)
                 .apiSecret(SecretKeys.API_SECRET)
                 .callback(Constants.CALLBACKURL)
-                .build();
+                .build(TrelloApi.instance());
     }
 
     /**
@@ -85,15 +86,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
             final String verifier = params[0];
-            final Verifier v = new Verifier(verifier);
+            //final Verifier v = new Verifier(verifier);
 
             // Store access token
-            final Token accessToken = service.getAccessToken(requestToken, v);
+            final OAuth1AccessToken accessToken = service.getAccessToken(requestToken, verifier);
 
             // Store the access token
             final SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS_NAME, 0).edit();
             editor.putString(Constants.PREF_ACCESS_TOKEN, accessToken.getToken());
-            editor.putString(Constants.PREF_ACCESS_SECRET, accessToken.getSecret());
+            editor.putString(Constants.PREF_ACCESS_SECRET, accessToken.getTokenSecret());
             editor.commit();
             return null;
         }
