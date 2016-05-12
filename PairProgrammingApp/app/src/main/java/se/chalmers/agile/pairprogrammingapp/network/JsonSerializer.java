@@ -14,6 +14,7 @@ import se.chalmers.agile.pairprogrammingapp.model.Note;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.utils.Constants;
+import se.chalmers.agile.pairprogrammingapp.model.User;
 
 /**
  * Created by wissam on 26/04/16.
@@ -83,5 +84,21 @@ public class JsonSerializer {
 
         }
         return new GetNotesResponse(notesListId, notes);
+
+    }
+
+    public static ArrayList<User> json2Members(JSONArray membersArray) {
+        ArrayList<User> result = new ArrayList<>();
+        try {
+            for (int i = 0; i < membersArray.length(); i++) {
+                JSONObject membersObject = membersArray.getJSONObject(i);
+                String membersFullName = membersObject.getString("fullName");
+                String membersUserName = membersObject.getString("username");
+                result.add(new User(membersFullName, membersUserName));
+            }
+        } catch (Exception e) {
+
+        }
+        return result;
     }
 }

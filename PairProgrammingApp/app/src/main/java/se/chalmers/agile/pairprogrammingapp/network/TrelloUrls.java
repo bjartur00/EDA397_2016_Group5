@@ -38,11 +38,10 @@ public class TrelloUrls {
         return "https://api.trello.com/1/lists/"+notesListId+"/cards";
     }
 
-    public static User[] getMembers(String currentUsername, String boardId, String devKey, String authToken) {
-        String urlRequest = "https://api.trello.com/1/boards/" + boardId + "/members?key=" + devKey + "&token=" + authToken;
-        RequestHandler.loadJsonArrayGet(urlRequest, new trelloRequestMembers(), Request.Priority.HIGH, "tag");
-        User[] users = new User[10];
-        return users;
+
+    public static String getMembersUrl(String boardId, String userToken) {
+        return "https://api.trello.com/1/boards/"+ boardId + "/members?key="+ SecretKeys.API_KEY +"&token=" + userToken;
+
     }
 
     public static String getProjectsUrl(String username, String userToken) {
