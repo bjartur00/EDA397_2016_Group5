@@ -1,6 +1,7 @@
 package se.chalmers.agile.pairprogrammingapp.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,12 +13,14 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import se.chalmers.agile.pairprogrammingapp.R;
+import se.chalmers.agile.pairprogrammingapp.fragments.DisplayNotesFragment;
 import se.chalmers.agile.pairprogrammingapp.fragments.TestCasesFragment;
 import se.chalmers.agile.pairprogrammingapp.fragments.TimerFragment;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
@@ -30,7 +33,11 @@ public class WorkSessionActivity extends AppCompatActivity {
     private static final int NOTES = 1;
     private static final int TIMER = 2;
 
+    private String mProjectId;
     private String mUnitId;
+
+    private TestCasesFragment mTestCasesFragment;
+    private DisplayNotesFragment mDisplayNotesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +46,12 @@ public class WorkSessionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mUnitId = extras.getString(ExtraKeys.UNIT_ID);
-
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
+            mProjectId = extras.getString(ExtraKeys.PROJECT_ID);
 
             String[] tabNames = getResources().getStringArray(R.array.session_tabs_names);
 
@@ -61,9 +62,11 @@ public class WorkSessionActivity extends AppCompatActivity {
             viewPager.setAdapter(mTabsAdapter);
 
 
-            mTabsAdapter.addTab(tabNames[TEST_CASES], TestCasesFragment.newInstance(mUnitId), TEST_CASES);
+            mTestCasesFragment = TestCasesFragment.newInstance(mUnitId);
+            mTabsAdapter.addTab(tabNames[TEST_CASES], mTestCasesFragment, TEST_CASES);
 
-            mTabsAdapter.addTab(tabNames[NOTES], TestCasesFragment.newInstance(mUnitId), NOTES);
+            mDisplayNotesFragment = DisplayNotesFragment.newInstance(mProjectId);
+            mTabsAdapter.addTab(tabNames[NOTES], mDisplayNotesFragment, NOTES);
 
             mTabsAdapter.addTab(tabNames[TIMER], TimerFragment.newInstance(), TIMER);
 
@@ -73,8 +76,30 @@ public class WorkSessionActivity extends AppCompatActivity {
             tabLayout.addTab(tabLayout.newTab().setText(tabNames[NOTES]));
             tabLayout.addTab(tabLayout.newTab().setText(tabNames[TIMER]));
 
-            viewPager.addOnPageChangeListener(new
-                    TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            // Listener for tab layout
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            // Listener for hiding and showing the fab
+            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == TIMER) {
+                        fab.hide();
+                    } else {
+                        fab.show();
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -92,7 +117,33 @@ public class WorkSessionActivity extends AppCompatActivity {
                 }
 
             });
+
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (viewPager.getCurrentItem() == NOTES) {
+                        mDisplayNotesFragment.addNewNote();
+                    }
+                }
+            });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private static class TabsAdapter extends FragmentStatePagerAdapter {

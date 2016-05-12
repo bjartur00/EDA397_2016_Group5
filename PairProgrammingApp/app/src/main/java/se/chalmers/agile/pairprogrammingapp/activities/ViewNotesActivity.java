@@ -72,7 +72,7 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
         // Prepare test data
         mNotes = new ArrayList<>();
 
-        if (mAppId.equals(StaticTestIds.APP_ID_1)) {
+        /*if (mAppId.equals(StaticTestIds.APP_ID_1)) {
             mNotes.add(new Note("Note for app 1"));
             mNotes.add(new Note("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt odio sed dui accumsan placerat. Nullam sit amet nisi tortor. Etiam viverra pretium odio sit amet gravida. Sed vel lorem a magna bibendum vehicula. Aliquam tristique tellus ligula, nec gravida turpis elementum vel. Praesent dignissim nulla eget libero eleifend pharetra. Ut vel tellus congue nisl hendrerit accumsan non non augue. Suspendisse facilisis eget lorem at dapibus. Pellentesque dui ante, tempor vel lorem eget, suscipit egestas enim. Proin nec vestibulum lorem. Integer vitae libero lacus. In consectetur ligula a vehicula consequat.\n" +
                     "\n" +
@@ -100,7 +100,7 @@ public class ViewNotesActivity extends AppCompatActivity implements NotesListAda
             mNotes.add(new Note("test note A"));
             mNotes.add(new Note("test note B"));
             mNotes.add(new Note("test note C"));
-        }
+        }*/
 
         // Show data
         RecyclerView rvList = (RecyclerView) findViewById(R.id.list);

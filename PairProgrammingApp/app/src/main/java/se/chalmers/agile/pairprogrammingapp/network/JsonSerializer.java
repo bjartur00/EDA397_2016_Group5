@@ -3,25 +3,35 @@ package se.chalmers.agile.pairprogrammingapp.network;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import se.chalmers.agile.pairprogrammingapp.model.GetNotesResponse;
+import se.chalmers.agile.pairprogrammingapp.model.Note;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
+import se.chalmers.agile.pairprogrammingapp.utils.Constants;
 
 /**
  * Created by wissam on 26/04/16.
  */
 public class JsonSerializer {
+    public static DateFormat sDateFormat = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
     public static ArrayList<Project> json2Projects(JSONArray projectsArray) {
         ArrayList<Project> result = new ArrayList<>();
         try {
-            for (int i = 0; i < projectsArray.length(); i++) {
-                JSONObject projectObject = projectsArray.getJSONObject(i);
+            for (int index = 0; index < projectsArray.length(); index++) {
+                JSONObject projectObject = projectsArray.getJSONObject(index);
                 String projectName = projectObject.getString("name");
                 String projectId = projectObject.getString("id");
                 result.add(new Project(projectName, projectId));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
         return result;
@@ -30,15 +40,48 @@ public class JsonSerializer {
     public static ArrayList<Unit> json2Units(JSONArray unitsArray) {
         ArrayList<Unit> result = new ArrayList<>();
         try {
-            for (int i = 0; i < unitsArray.length(); i++) {
-                JSONObject unitObject = unitsArray.getJSONObject(i);
+            for (int index = 0; index < unitsArray.length(); index++) {
+                JSONObject unitObject = unitsArray.getJSONObject(index);
                 String unitName = unitObject.getString("name");
-                String unitId = unitObject.getString("id");
-                result.add(new Unit(unitName, unitId));
+                // The name shouldn't equal to the notes or timer lists names
+                if (!unitName.equals(Constants.NOTES_LIST_NAME) && !unitName.equals(Constants.TIMER_LIST_NAME)) {
+                    String unitId = unitObject.getString("id");
+                    result.add(new Unit(unitName, unitId));
+                }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
         return result;
+    }
+
+    public static GetNotesResponse json2Notes(JSONArray unitsArray) {
+        String notesListId = "";
+        ArrayList<Note> notes = new ArrayList<>();
+        try {
+            for (int unitIndex = 0; unitIndex < unitsArray.length(); unitIndex++) {
+                JSONObject unitObject = unitsArray.getJSONObject(unitIndex);
+                String unitName = unitObject.getString("name");
+                if (unitName.equals(Constants.NOTES_LIST_NAME)) {
+                    notesListId = unitObject.getString("id");
+                    JSONArray notesArray = unitObject.getJSONArray("cards");
+                    for (int noteIndex = 0; noteIndex < notesArray.length(); noteIndex++) {
+                        JSONObject noteObject = notesArray.getJSONObject(noteIndex);
+                        String noteId = noteObject.getString("id");
+                        String noteContent = noteObject.getString("name");
+                        Date noteCreated = new Date();
+                        try {
+                            noteCreated = sDateFormat.parse(noteObject
+                                    .getString("due"));
+                        } catch (Exception ignored) {
+                        }
+                        notes.add(new Note(noteId, noteContent, noteCreated));
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+        return new GetNotesResponse(notesListId, notes);
     }
 }

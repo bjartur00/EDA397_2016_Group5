@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -43,8 +44,8 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
     //contains the layout of the views inside of the Recycler view.
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static ArrayList<Unit> mUnits;
-
+    private ArrayList<Unit> mUnits;
+    private String mProjectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +68,9 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String projectId = extras.getString(ExtraKeys.PROJECT_ID);
+            mProjectId = extras.getString(ExtraKeys.PROJECT_ID);
 
-            RequestHandler.loadJsonArrayGet(TrelloUrls.getUnitsUrl(projectId, ((PairProgrammingApplication) DisplayUnitsActivity.this.getApplication()).getToken()),
+            RequestHandler.loadJsonArrayGet(TrelloUrls.getUnitsUrl(mProjectId, ((PairProgrammingApplication) DisplayUnitsActivity.this.getApplication()).getToken()),
                     new RequestHandler.OnJsonArrayLoadedListener() {
                         @Override
                         public void onJsonDataLoadedSuccessfully(JSONArray data) {
@@ -81,16 +82,27 @@ public class DisplayUnitsActivity extends AppCompatActivity implements DisplayUn
 
                         @Override
                         public void onJsonDataLoadingFailure(int errorId) {
-                            Log.d("wissam", errorId + "");
                         }
                     }, Request.Priority.HIGH, TAG);
         }
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onUnitItemClick(int position) {
         Intent intent = new Intent(this, WorkSessionActivity.class);
         intent.putExtra(ExtraKeys.UNIT_ID, mUnits.get(position).getID());
+        intent.putExtra(ExtraKeys.PROJECT_ID, mProjectId);
         startActivity(intent);
     }
 }

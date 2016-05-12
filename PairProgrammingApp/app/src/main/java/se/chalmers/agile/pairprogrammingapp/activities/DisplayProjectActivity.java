@@ -67,7 +67,6 @@ public class DisplayProjectActivity extends AppCompatActivity implements Display
 //                        .setAction("Action", null).show();
 //            }
 //        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
 

@@ -62,30 +62,13 @@ public class RequestHandler {
             public Request.Priority getPriority() {
                 return priority;
             }
-
-            // TODO check if we need to include these for the app ID and the token
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = super.getHeaders();
-
-                if (headers == null
-                        || headers.equals(Collections.emptyMap())) {
-                    headers = new HashMap<String, String>();
-                }
-
-                headers.put("key", "application_key");
-                headers.put("token", "optional_auth_token");
-
-
-                return headers;
-            }*/
         };
         // Add request to request queue
         VolleySingleton.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
 
     public static void loadJsonArrayGet(String url, final OnJsonArrayLoadedListener listener,
-                                       final Request.Priority priority, String tag) {
+                                        final Request.Priority priority, String tag) {
         JsonArrayRequest jsonObjReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
 
@@ -120,23 +103,6 @@ public class RequestHandler {
             public Request.Priority getPriority() {
                 return priority;
             }
-
-            // TODO check if we need to include these for the app ID and the token
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = super.getHeaders();
-
-                if (headers == null
-                        || headers.equals(Collections.emptyMap())) {
-                    headers = new HashMap<String, String>();
-                }
-
-                headers.put("key", "application_key");
-                headers.put("token", "optional_auth_token");
-
-
-                return headers;
-            }*/
         };
         // Add request to request queue
         VolleySingleton.getInstance().addToRequestQueue(jsonObjReq, tag);
@@ -185,31 +151,14 @@ public class RequestHandler {
             public Request.Priority getPriority() {
                 return priority;
             }
-
-            // TODO check if we need to include these for the app ID and the token
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = super.getHeaders();
-
-                if (headers == null
-                        || headers.equals(Collections.emptyMap())) {
-                    headers = new HashMap<String, String>();
-                }
-
-                headers.put("key", "application_key");
-                headers.put("token", "optional_auth_token");
-
-
-                return headers;
-            }*/
         };
         // Add request to request queue
         VolleySingleton.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
 
     public static void loadJsonDataPut(String url, final OnJsonDataLoadedListener listener,
-                                        final Map<String, String> params, final Request.Priority priority,
-                                        String tag) {
+                                       final Map<String, String> params, final Request.Priority priority,
+                                       String tag) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PUT,
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -250,30 +199,13 @@ public class RequestHandler {
             public Request.Priority getPriority() {
                 return priority;
             }
-
-            // TODO check if we need to include these for the app ID and the token
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = super.getHeaders();
-
-                if (headers == null
-                        || headers.equals(Collections.emptyMap())) {
-                    headers = new HashMap<String, String>();
-                }
-
-                headers.put("key", "application_key");
-                headers.put("token", "optional_auth_token");
-
-
-                return headers;
-            }*/
         };
         // Add request to request queue
         VolleySingleton.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
 
     public static void loadJsonDataDelete(String url, final OnJsonDataLoadedListener listener,
-                                       final Request.Priority priority, String tag) {
+                                          final Request.Priority priority, String tag) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -309,23 +241,6 @@ public class RequestHandler {
             public Request.Priority getPriority() {
                 return priority;
             }
-
-            // TODO check if we need to include these for the app ID and the token
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = super.getHeaders();
-
-                if (headers == null
-                        || headers.equals(Collections.emptyMap())) {
-                    headers = new HashMap<String, String>();
-                }
-
-                headers.put("key", "application_key");
-                headers.put("token", "optional_auth_token");
-
-
-                return headers;
-            }*/
         };
         // Add request to request queue
         VolleySingleton.getInstance().addToRequestQueue(jsonObjReq, tag);
@@ -333,11 +248,13 @@ public class RequestHandler {
 
     public interface OnJsonDataLoadedListener {
         void onJsonDataLoadedSuccessfully(JSONObject data);
+
         void onJsonDataLoadingFailure(int errorId);
     }
 
     public interface OnJsonArrayLoadedListener {
         void onJsonDataLoadedSuccessfully(JSONArray data);
+
         void onJsonDataLoadingFailure(int errorId);
     }
 }

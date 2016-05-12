@@ -92,7 +92,6 @@ public class TestCasesActivity extends AppCompatActivity implements TestCasesLis
 
                         @Override
                         public void onJsonDataLoadingFailure(int errorId) {
-                            Log.d("wissam", errorId + "");
                         }
                     }, Request.Priority.HIGH, TAG);
         }
