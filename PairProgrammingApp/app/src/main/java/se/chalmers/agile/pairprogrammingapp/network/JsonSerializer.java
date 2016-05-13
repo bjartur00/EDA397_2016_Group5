@@ -15,6 +15,7 @@ import se.chalmers.agile.pairprogrammingapp.model.GetNotesResponse;
 import se.chalmers.agile.pairprogrammingapp.model.GetProjectsResponse;
 import se.chalmers.agile.pairprogrammingapp.model.Note;
 import se.chalmers.agile.pairprogrammingapp.model.Project;
+import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.model.Unit;
 import se.chalmers.agile.pairprogrammingapp.utils.Constants;
 import se.chalmers.agile.pairprogrammingapp.model.User;
@@ -83,8 +84,7 @@ public class JsonSerializer {
                         try {
                             noteCreated = sDateFormat.parse(noteObject
                                     .getString("due"));
-                        } catch (Exception e) {
-                            Log.d("wissam", e.toString());
+                        } catch (Exception ignored) {
                         }
                         notes.add(new Note(noteId, noteContent, noteCreated));
                     }
@@ -106,9 +106,53 @@ public class JsonSerializer {
                 String membersUserName = membersObject.getString("username");
                 result.add(new User(membersFullName, membersUserName));
             }
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
+        return result;
+    }
+
+    public static Note json2Note(JSONObject noteObject) {
+        String id = "";
+        String name = "";
+        Date noteCreated = new Date();
+        try {
+            id = noteObject.getString("id");
+            name = noteObject.getString("name");
+            try {
+                noteCreated = sDateFormat.parse(noteObject.getString("due"));
+            } catch (Exception ignored) {
+            }
+        } catch (Exception ignored) {
+        }
+        return new Note(id, name, noteCreated);
+    }
+
+    public static ArrayList<TestCase> json2TestCases(JSONArray testCasesArray) {
+        ArrayList<TestCase> result = new ArrayList<>();
+
+        for (int i = 0; i < testCasesArray.length(); i++) {
+            try {
+                JSONObject testCaseObject = testCasesArray.getJSONObject(i);
+                String color = "";
+                int iColor = 0;
+                try {
+                    color = new JSONArray(testCaseObject.getString("labels")).getJSONObject(0).getString("color");
+                } catch (Exception e) {
+                    color = "";
+                }
+                if (color.contains("green")) {
+                    iColor = TestCase.PASSED;
+                } else if (color.contains("yellow")) {
+                    iColor = TestCase.TESTING;
+                } else if (color.contains("red")) {
+                    iColor = TestCase.NOT_PASSED;
+                }
+                result.add(new TestCase(testCaseObject.getString("name"), "",
+                        iColor, testCaseObject.getString("id"), testCaseObject.getString("idList")));
+            } catch (Exception ignored) {
+            }
+        }
+
         return result;
     }
 }

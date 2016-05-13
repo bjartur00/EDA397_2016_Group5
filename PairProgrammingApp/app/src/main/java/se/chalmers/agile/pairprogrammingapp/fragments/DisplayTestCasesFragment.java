@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.android.volley.Request;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ import se.chalmers.agile.pairprogrammingapp.PairProgrammingApplication;
 import se.chalmers.agile.pairprogrammingapp.R;
 import se.chalmers.agile.pairprogrammingapp.model.TestCase;
 import se.chalmers.agile.pairprogrammingapp.modelview.TestCasesListAdapter;
+import se.chalmers.agile.pairprogrammingapp.network.JsonSerializer;
 import se.chalmers.agile.pairprogrammingapp.network.RequestHandler;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 
@@ -67,30 +69,12 @@ public class DisplayTestCasesFragment extends Fragment implements TestCasesListA
                     new RequestHandler.OnJsonArrayLoadedListener() {
                         @Override
                         public void onJsonDataLoadedSuccessfully(JSONArray data) {
-                            mTestCases = new ArrayList<>();
+                            mTestCases = JsonSerializer.json2TestCases(data);
 
-                            int iColor = 0;
-                            for (int i = 0; i < data.length(); i++) {
-                                try {
-                                    String color = "";
-                                    try {
-                                        color = new JSONArray(data.getJSONObject(i).getString("labels")).getJSONObject(0).getString("color");
-                                    } catch (Exception e) {
-                                        color = "";
-                                    }
-                                    if (color.contains("green")) {
-                                        iColor = 1;
-                                    } else if (color.contains("yellow")) {
-                                        iColor = 2;
-                                    } else if (color.contains("red")) {
-                                        iColor = 3;
-                                    }
-                                    color = "";
-                                    mTestCases.add(new TestCase(data.getJSONObject(i).getString("name"), "", iColor, i, data.getJSONObject(i).getString("idList")));
-                                } catch (Exception e) {
-                                }
-                            }
-                            populateRecyclerView();
+                            RecyclerView rvList = (RecyclerView) getView().findViewById(R.id.listViewTestCases);
+                            rvList.setLayoutManager(new LinearLayoutManager(getContext()));
+                            mAdapter = new TestCasesListAdapter(mTestCases, DisplayTestCasesFragment.this);
+                            rvList.setAdapter(mAdapter);
                         }
 
                         @Override
@@ -98,14 +82,6 @@ public class DisplayTestCasesFragment extends Fragment implements TestCasesListA
                         }
                     }, Request.Priority.HIGH, TAG);
         }
-    }
-
-    // Initializes the recycler view for the test cases
-    private void populateRecyclerView() {
-        RecyclerView rvList = (RecyclerView) getView().findViewById(R.id.listViewTestCases);
-        rvList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new TestCasesListAdapter(mTestCases, this);
-        rvList.setAdapter(mAdapter);
     }
 
     @Override
@@ -117,12 +93,72 @@ public class DisplayTestCasesFragment extends Fragment implements TestCasesListA
 
 
     @Override
-    public void onTestCaseItemClicked(int position) {
+    public void onTestCaseItemClicked(final int position) {
+        final TestCase clickedTestCase = mTestCases.get(position);
+        String newColor = "";
+        String oldColor = "";
+        int newColorId = TestCase.TESTING;
+        switch (clickedTestCase.getStatus()) {
+            case TestCase.PASSED:
+                oldColor = "green";
+                newColor = "yellow";
+                newColorId = TestCase.TESTING;
+                break;
+            case TestCase.TESTING:
+                oldColor = "yellow";
+                newColor = "red";
+                newColorId = TestCase.NOT_PASSED;
+                break;
+            case TestCase.NOT_PASSED:
+                oldColor = "red";
+                newColor = "green";
+                newColorId = TestCase.PASSED;
+                break;
+        }
 
+        // To be used in inner class
+        final int finalNewColorId = newColorId;
+        final String finalNewColor = newColor;
+
+        RequestHandler.loadStringDelete(
+                TrelloUrls.removeTestCaseColorUrl(
+                        clickedTestCase.getId(),
+                        oldColor,
+                        ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
+                new RequestHandler.OnStringLoadedListener() {
+                    @Override
+                    public void onStringLoadedSuccessfully(String data) {
+                        RequestHandler.loadJsonDataPost(
+                                TrelloUrls.addTestCaseColorUrl(
+                                        clickedTestCase.getId(),
+                                        finalNewColor,
+                                        ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
+                                new RequestHandler.OnJsonDataLoadedListener() {
+                                    @Override
+                                    public void onJsonDataLoadedSuccessfully(JSONObject data) {
+                                        clickedTestCase.setStatus(finalNewColorId);
+                                        mAdapter.notifyItemChanged(position);
+                                    }
+
+                                    @Override
+                                    public void onJsonDataLoadingFailure(int errorId) {
+                                    }
+                                },
+                                null,
+                                Request.Priority.HIGH,
+                                TAG);
+                    }
+
+                    @Override
+                    public void onStringLoadingFailure(int errorId) {
+                    }
+                },
+                Request.Priority.HIGH,
+                TAG);
     }
 
     @Override
-    public void onChangeTestCaseClicked(int position) {
+    public void onEditTestCaseClicked(int position) {
 
     }
 

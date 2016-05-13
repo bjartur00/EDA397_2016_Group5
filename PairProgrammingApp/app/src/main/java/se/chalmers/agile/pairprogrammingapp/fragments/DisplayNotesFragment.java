@@ -33,7 +33,6 @@ import se.chalmers.agile.pairprogrammingapp.network.JsonSerializer;
 import se.chalmers.agile.pairprogrammingapp.network.RequestHandler;
 import se.chalmers.agile.pairprogrammingapp.network.TrelloUrls;
 import se.chalmers.agile.pairprogrammingapp.utils.ExtraKeys;
-import se.chalmers.agile.pairprogrammingapp.utils.SecretKeys;
 
 public class DisplayNotesFragment extends Fragment implements NotesListAdapter.OnNoteItemClickedListener {
     private final static String TAG = "se.chalmers.agile.pairprogrammingapp.fragments.DisplayNotesFragment";
@@ -129,8 +128,7 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                 .setCancelable(false)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Delete the note
-                        mAdapter.deleteItem(position);
+                        deleteNoteOnTrello(position);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -163,7 +161,7 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                 int position = data.getIntExtra(ExtraKeys.NOTE_POSITION, NEW_NOTE_POSITION);
                 String content = data.getStringExtra(ExtraKeys.NOTE_CONTENT);
                 if (position == NEW_NOTE_POSITION) {
-                    addNote2Trello(content);
+                    addNoteOnTrello(content);
                 } else {
                     editNoteOnTrello(position, content);
                 }
@@ -171,7 +169,7 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
         }
     }
 
-    private void addNote2Trello(final String content) {
+    private void addNoteOnTrello(final String content) {
         Map<String, String> params = new HashMap<>();
         RequestHandler.loadJsonDataPost(
                 TrelloUrls.addNoteUrl(
@@ -182,7 +180,7 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                 new RequestHandler.OnJsonDataLoadedListener() {
                     @Override
                     public void onJsonDataLoadedSuccessfully(JSONObject data) {
-                        mNotes.add(new Note(content));
+                        mNotes.add(JsonSerializer.json2Note(data));
                         mAdapter.notifyItemAdded();
                     }
 
@@ -196,7 +194,6 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
     }
 
     private void editNoteOnTrello(final int position, final String content) {
-        Map<String, String> params = new HashMap<>();
         RequestHandler.loadJsonDataPut(
                 TrelloUrls.editNoteUrl(
                         mNotes.get(position).getId(),
@@ -213,16 +210,7 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                                         mNotes.get(position).getId(),
                                         JsonSerializer.sDateFormat.format(new Date()),
                                         ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
-                                new RequestHandler.OnJsonDataLoadedListener() {
-                                    @Override
-                                    public void onJsonDataLoadedSuccessfully(JSONObject data) {
-
-                                    }
-
-                                    @Override
-                                    public void onJsonDataLoadingFailure(int errorId) {
-                                    }
-                                },
+                                null,
                                 null,
                                 Request.Priority.HIGH,
                                 TAG);
@@ -232,7 +220,26 @@ public class DisplayNotesFragment extends Fragment implements NotesListAdapter.O
                     public void onJsonDataLoadingFailure(int errorId) {
                     }
                 },
-                params,
+                null,
+                Request.Priority.HIGH,
+                TAG);
+    }
+
+    private void deleteNoteOnTrello(final int position) {
+        RequestHandler.loadJsonDataDelete(
+                TrelloUrls.deleteNoteUrl(
+                        mNotes.get(position).getId(),
+                        ((PairProgrammingApplication) getActivity().getApplication()).getToken()),
+                new RequestHandler.OnJsonDataLoadedListener() {
+                    @Override
+                    public void onJsonDataLoadedSuccessfully(JSONObject data) {
+                        mAdapter.deleteItem(position);
+                    }
+
+                    @Override
+                    public void onJsonDataLoadingFailure(int errorId) {
+                    }
+                },
                 Request.Priority.HIGH,
                 TAG);
     }

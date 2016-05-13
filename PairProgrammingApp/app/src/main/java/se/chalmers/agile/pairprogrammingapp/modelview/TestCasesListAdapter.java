@@ -69,7 +69,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
             tvTitle = (TextView) itemView.findViewById(R.id.item_TestCaseTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.item_TestCaseDescription);
 
-            //itemView.findViewById(R.id.testCase).setOnClickListener(this);
+            itemView.findViewById(R.id.testCase).setOnClickListener(this);
         }
 
         public void setData(int position, TestCase testCase) {
@@ -77,13 +77,17 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
             TestCase currentTestCase = testCases.get(position);
 
             switch (currentTestCase.getStatus()) {
-                case 1:  itemView.setBackgroundColor(Color.GREEN);
+                case TestCase.PASSED:
+                    itemView.setBackgroundColor(Color.GREEN);
                     break;
-                case 2:  itemView.setBackgroundColor(Color.YELLOW);
+                case TestCase.TESTING:
+                    itemView.setBackgroundColor(Color.YELLOW);
                     break;
-                case 3:  itemView.setBackgroundColor(Color.RED);
+                case TestCase.NOT_PASSED:
+                    itemView.setBackgroundColor(Color.RED);
                     break;
-                default: itemView.setBackgroundColor(Color.WHITE);
+                default:
+                    itemView.setBackgroundColor(Color.WHITE);
                     break;
             }
 
@@ -95,27 +99,10 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
         public void onClick(View v) {
             if (listener != null) {
                 if (v.getId() == R.id.testCase) {
-                    TestCase clickedTestCase = testCases.get(position);
-                    switch (clickedTestCase.getStatus()) {
-                        case 1:
-                            v.setBackgroundColor(Color.YELLOW);
-                            clickedTestCase.setStatus(clickedTestCase.getStatus() + 1);
-                            break;
-                        case 2:
-                            v.setBackgroundColor(Color.RED);
-                            clickedTestCase.setStatus(clickedTestCase.getStatus() + 1);
-                            break;
-                        case 3:
-                            v.setBackgroundColor(Color.GREEN);
-                            clickedTestCase.setStatus(clickedTestCase.getStatus() - 2);
-                            break;
-                        default:
-                            v.setBackgroundColor(Color.WHITE);
-                            break;
-                    }
-                }  else if (v.getId() == R.id.btnDelete) {
-                    listener.onChangeTestCaseClicked(getAdapterPosition());
-                }  else if (v.getId() == R.id.btnDelete) {
+                    listener.onTestCaseItemClicked(getAdapterPosition());
+                } else if (v.getId() == R.id.btnEdit) {
+                    listener.onEditTestCaseClicked(getAdapterPosition());
+                } else if (v.getId() == R.id.btnDelete) {
                     listener.onDeleteTestCaseClicked(getAdapterPosition());
                 }
             }
@@ -126,7 +113,7 @@ public class TestCasesListAdapter extends RecyclerView.Adapter<TestCasesListAdap
     public interface OnTestCaseItemClickedListener {
         void onTestCaseItemClicked(int position);
 
-        void onChangeTestCaseClicked(int position);
+        void onEditTestCaseClicked(int position);
 
         void onDeleteTestCaseClicked(int position);
     }

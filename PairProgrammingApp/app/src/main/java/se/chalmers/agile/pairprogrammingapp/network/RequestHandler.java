@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -13,6 +14,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -251,6 +254,48 @@ public class RequestHandler {
         VolleySingleton.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
 
+    public static void loadStringDelete(String url, final OnStringLoadedListener listener,
+                                        final Request.Priority priority, String tag) {
+        com.android.volley.toolbox.StringRequest stringRequest = new StringRequest(Request.Method.DELETE,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (listener != null) {
+                            listener.onStringLoadedSuccessfully(response);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (listener != null) {
+                            int errorId = R.string.error_connection;
+                            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                                errorId = R.string.error_connection;
+                            } else if (error instanceof AuthFailureError) {
+                                errorId = R.string.error_connection;
+                            } else if (error instanceof ServerError) {
+                                errorId = R.string.error_server;
+                            } else if (error instanceof NetworkError) {
+                                errorId = R.string.error_connection;
+                            } else if (error instanceof ParseError) {
+                                errorId = R.string.error_parse;
+                            }
+                            listener.onStringLoadingFailure(errorId);
+                        }
+                    }
+                }) {
+            @Override
+            public Request.Priority getPriority() {
+                return priority;
+            }
+        };
+
+        // Add request to request queue
+        VolleySingleton.getInstance().addToRequestQueue(stringRequest, tag);
+    }
+
     public interface OnJsonDataLoadedListener {
         void onJsonDataLoadedSuccessfully(JSONObject data);
 
@@ -261,5 +306,11 @@ public class RequestHandler {
         void onJsonDataLoadedSuccessfully(JSONArray data);
 
         void onJsonDataLoadingFailure(int errorId);
+    }
+
+    public interface OnStringLoadedListener {
+        void onStringLoadedSuccessfully(String data);
+
+        void onStringLoadingFailure(int errorId);
     }
 }

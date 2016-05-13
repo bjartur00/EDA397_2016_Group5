@@ -43,18 +43,30 @@ public class TrelloUrls {
         return "https://api.trello.com/1/lists/" + notesListId + "/cards?name=" + encodedContent + "&due=" + due + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
     }
 
-    public static String editNoteUrl(String cardsId, String content, String userToken) {
+    public static String editNoteUrl(String cardId, String content, String userToken) {
         String encodedContent = null;
         try {
             encodedContent = URLEncoder.encode(content, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             encodedContent = "";
         }
-        return "https://api.trello.com/1/cards/" + cardsId + "/name?value=" + encodedContent + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+        return "https://api.trello.com/1/cards/" + cardId + "/name?value=" + encodedContent + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+    }
+
+    public static String deleteNoteUrl(String cardsId, String userToken) {
+        return "https://api.trello.com/1/cards/" + cardsId + "?key=" + SecretKeys.API_KEY + "&token=" + userToken;
     }
 
     public static String editNoteModDateUrl(String cardsId, String due, String userToken) {
         return "https://api.trello.com/1/cards/" + cardsId + "/due?value=" + due + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+    }
+
+    public static String addTestCaseColorUrl(String cardId, String newColor, String userToken) {
+        return "https://api.trello.com/1/cards/" + cardId + "/labels?color=" + newColor + "&key=" + SecretKeys.API_KEY + "&token=" + userToken;
+    }
+
+    public static String removeTestCaseColorUrl(String cardId, String newColor, String userToken) {
+        return "https://api.trello.com/1/cards/" + cardId + "/labels/" + newColor + "?key=" + SecretKeys.API_KEY + "&token=" + userToken;
     }
 
     public static String getMembersUrl(String boardId, String userToken) {
