@@ -14,6 +14,13 @@
     tools:showIn="@layout/activity_main"
     android:weightSum="1">
 
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logo"/>
+
     <Button
         android:id="@+id/bLogin"
         android:layout_width="match_parent"
